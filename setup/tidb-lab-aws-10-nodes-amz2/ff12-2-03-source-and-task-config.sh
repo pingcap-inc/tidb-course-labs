@@ -6,7 +6,7 @@ REGION_NAME=${1}
 source .bash_profile
 source ./hosts-env.sh
 
-X=`tiup dmctl:v6.5.1 --encrypt 'q1w2e3R4_'`
+X=`tiup dmctl:v7.5.1 --encrypt 'q1w2e3R4_'`
 
 cat << EOF > mysql-source-conf1.yaml
 source-id: "mysql-replica-01"
@@ -26,13 +26,13 @@ from:
   password: "${X}"
 EOF
 
-tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf1.yaml
-tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf2.yaml
+tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf1.yaml
+tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf2.yaml
 
-tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-01
-tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-02
+tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-01
+tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-02
 
-tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source show
+tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source show
 
 cat << EOF > dm-task.yaml
 name: "dm-task"
@@ -104,4 +104,4 @@ mydumpers:
     chunk-filesize: 64
 EOF
 
-tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 check-task ./dm-task.yaml
+tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 check-task ./dm-task.yaml

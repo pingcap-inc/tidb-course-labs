@@ -6,8 +6,8 @@ source ./hosts-env.sh
 
 ./fff7.sh ${REGION_NAME}
 
-wget https://download.pingcap.org/tidb-community-toolkit-v6.5.1-linux-amd64.tar.gz
-tar xvf tidb-community-toolkit-v6.5.1-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-community-toolkit-v7.5.1-linux-amd64.tar.gz
+tar xvf tidb-community-toolkit-v7.5.1-linux-amd64.tar.gz
 
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -A ${HOST_PD3_PRIVATE_IP} << 'EOFX'
 echo "Operating on `hostname`"
@@ -47,7 +47,7 @@ INSERT INTO T3 VALUES (1,'Tom'), (2,'Jack'), (3,'Frank'), (4,'Tony');
 INSERT INTO T4 VALUES (1,'Tom'), (2,'Jack'), (3,'Frank'), (4,'Tony');
 EOF
 
-./tidb-community-toolkit-v6.5.1-linux-amd64/sync_diff_inspector --config=./solution-sync-diff-config.toml
+./tidb-community-toolkit-v7.5.1-linux-amd64/sync_diff_inspector --config=./solution-sync-diff-config.toml
 
 cat ./output/summary.txt
 
@@ -73,6 +73,6 @@ EOF
 exit
 EOFX
 
-./tidb-community-toolkit-v6.5.1-linux-amd64/sync_diff_inspector --config=./solution-sync-diff-config.toml
+./tidb-community-toolkit-v7.5.1-linux-amd64/sync_diff_inspector --config=./solution-sync-diff-config.toml
 
 cat ./output/summary.txt   
