@@ -4,7 +4,7 @@ REGION_NAME=${1}
 source .bash_profile
 source ./hosts-env.sh
 
-./create-cluster-v651.sh ${REGION_NAME}
+./create-cluster-v751.sh ${REGION_NAME}
 
 sleep 25;
 

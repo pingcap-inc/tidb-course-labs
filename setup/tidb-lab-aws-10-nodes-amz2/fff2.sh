@@ -5,7 +5,7 @@ source .bash_profile
 source ./hosts-env.sh
 
 # Fast forward E1
-./create-cluster-v650.sh ${REGION_NAME}
+./create-cluster-v750.sh ${REGION_NAME}
 
 sleep 5;
 
