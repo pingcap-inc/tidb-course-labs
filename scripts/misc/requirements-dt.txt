@@ -1,0 +1,3 @@
+# Required
+mysql-connector
+mysql-connector-python

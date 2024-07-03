@@ -1,0 +1,2 @@
+[server]
+labels = {"region"="shanghai", "disk"="ssd"}

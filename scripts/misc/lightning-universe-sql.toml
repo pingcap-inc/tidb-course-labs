@@ -1,0 +1,28 @@
+[lightning]
+level = "info"
+file = "../stage/tidb-lightning-universe.log"
+table-concurrency = 1
+index-concurrency = 1
+region-concurrency = 1
+io-concurrency = 1
+max-error = 0
+task-info-schema-name = "lightning_task_info"
+
+[checkpoint]
+enable = true
+
+[tikv-importer]
+backend = "tikv"
+sorted-kv-dir = "../stage/sorted-kv-dir"
+
+[mydumper]
+data-source-dir = "./misc/universe-dumpling"
+filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+
+[tidb]
+host = "127.0.0.1"
+port = 4000
+user = "root"
+password = ""
+status-port = 10080
+pd-addr = "127.0.0.1:2379"
