@@ -6,17 +6,17 @@ source ./hosts-env.sh
 
 ./fff8.sh ${REGION_NAME}
 
-~/.tiup/bin/tiup install dumpling:v6.5.1
+~/.tiup/bin/tiup install dumpling:v7.5.1
 unzip -u stage/tidb-admin-dataset.zip -d stage/
 
 mysql -h ${HOST_DB1_PRIVATE_IP} -uroot -P4000 << 'EOF'
 DROP DATABASE IF EXISTS emp;
 EOF
 
-~/.tiup/bin/tiup tidb-lightning:v6.5.1 -config solution-lightning-sql.toml
+~/.tiup/bin/tiup tidb-lightning:v7.5.1 -config solution-lightning-sql.toml
 rm -rf /tmp/tidb_lightning_checkpoint.pb
 
-~/.tiup/bin/tiup dumpling:v6.5.1 -uroot -P4000 -h ${HOST_DB1_PRIVATE_IP} --filetype sql -t 8 -o /tmp/dep -r 200000 -F 256MiB -T emp.dep
+~/.tiup/bin/tiup dumpling:v7.5.1 -uroot -P4000 -h ${HOST_DB1_PRIVATE_IP} --filetype sql -t 8 -o /tmp/dep -r 200000 -F 256MiB -T emp.dep
 
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -A ${HOST_PD3_PRIVATE_IP} << 'EOFX'
 echo "Operating on `hostname`"
@@ -32,4 +32,4 @@ EOF
 exit
 EOFX
 
-~/.tiup/bin/tiup dumpling:v6.5.1 -uexp -P 3306 -h ${HOST_PD3_PRIVATE_IP} -pq1w2e3R4_ --filetype sql -t 8 -o /tmp/empmysql -r 200000 -F 256MiB -B emp
+~/.tiup/bin/tiup dumpling:v7.5.1 -uexp -P 3306 -h ${HOST_PD3_PRIVATE_IP} -pq1w2e3R4_ --filetype sql -t 8 -o /tmp/empmysql -r 200000 -F 256MiB -B emp

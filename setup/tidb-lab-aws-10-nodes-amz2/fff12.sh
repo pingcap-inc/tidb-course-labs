@@ -7,9 +7,9 @@ source ./hosts-env.sh
 ./fff8.sh ${REGION_NAME}
 
 # Fast forward E12-1
-~/.tiup/bin/tiup install dm dmctl:v6.5.1
+~/.tiup/bin/tiup install dm dmctl:v7.5.1
 # tiup update --self && tiup update dm && tiup update dm
-~/.tiup/bin/tiup dm deploy dm-test v6.5.1 ./solution-dm-topology-six-nodes.yaml --yes
+~/.tiup/bin/tiup dm deploy dm-test v7.5.1 ./solution-dm-topology-six-nodes.yaml --yes
 ~/.tiup/bin/tiup dm start dm-test
 
 # Fast forward E12-2-mysql-setup
@@ -71,7 +71,7 @@ CREATE DATABASE log;
 CREATE TABLE log.messages(id INT PRIMARY KEY, msg VARCHAR(64));
 EOF
 
-X=`~/.tiup/bin/tiup dmctl:v6.5.1 --encrypt 'q1w2e3R4_'`
+X=`~/.tiup/bin/tiup dmctl:v7.5.1 --encrypt 'q1w2e3R4_'`
 
 cat << EOF > mysql-source-conf1.yaml
 source-id: "mysql-replica-01"
@@ -91,13 +91,13 @@ from:
   password: "${X}"
 EOF
 
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf1.yaml
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf2.yaml
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf1.yaml
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source create mysql-source-conf2.yaml
 
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-01
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-02
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-01
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 get-config source mysql-replica-02
 
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source show
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 operate-source show
 
 cat << EOF > dm-task.yaml
 name: "dm-task"
@@ -169,6 +169,6 @@ mydumpers:
     chunk-filesize: 64
 EOF
 
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 check-task ./dm-task.yaml
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 start-task dm-task.yaml
-~/.tiup/bin/tiup dmctl:v6.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 query-status dm-task.yaml
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 check-task ./dm-task.yaml
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 start-task dm-task.yaml
+~/.tiup/bin/tiup dmctl:v7.5.1 --master-addr=${HOST_PD1_PRIVATE_IP}:8261 query-status dm-task.yaml

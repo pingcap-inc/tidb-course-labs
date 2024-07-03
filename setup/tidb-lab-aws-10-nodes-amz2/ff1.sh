@@ -5,4 +5,4 @@ REGION_NAME=${1}
 # nohup ./create-cluster-v650.sh > nohup-tiup.log &
 # tail -f nohup-tiup.log &
 ./destroy-all.sh
-./create-cluster-v650.sh ${REGION_NAME}
+./create-cluster-v750.sh ${REGION_NAME}
