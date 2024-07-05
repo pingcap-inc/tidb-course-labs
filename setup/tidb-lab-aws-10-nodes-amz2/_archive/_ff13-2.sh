@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Deprecated by skipping based fast-forward script
+
 # Fast forward E13-1
 ./ff13-1.sh
 source .bash_profile

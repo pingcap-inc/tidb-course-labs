@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Deprecated by non-hybrid deployment.
+
 # Fast forward E12-1
 ./ff12-1.sh
 source .bash_profile
