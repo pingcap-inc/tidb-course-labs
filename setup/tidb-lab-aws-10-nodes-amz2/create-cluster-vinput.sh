@@ -2,6 +2,8 @@
 VERSION=${1}
 REGION_NAME=${2}
 
+source ./cloud-env.sh
+
 ~/.tiup/bin/tiup mirror set tidb-community-server-${VERSION}-linux-amd64
 ./01-precheck-and-fix-nodes.sh ${REGION_NAME}
 ./destroy-all.sh
