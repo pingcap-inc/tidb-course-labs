@@ -9,7 +9,7 @@ backend = "local"
 sorted-kv-dir = "/tmp/sorted-kv-dir"
 
 [mydumper]
-data-source-dir = "/home/ec2-user/stage/TiDB-Administration-exercise-data/exercise-08/Importing-Data-into-TiDB-in-Parallel/my_table_1"
+data-source-dir = "/home/ec2-user/stage/TiDB-Administration-exercise-data-v2/exercise-lightning/Importing-Data-into-TiDB-in-Parallel/my_table_1"
 filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
 
 [[routes]]
