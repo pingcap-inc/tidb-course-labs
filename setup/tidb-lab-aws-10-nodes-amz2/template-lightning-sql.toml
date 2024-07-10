@@ -7,7 +7,7 @@ backend = "local"
 sorted-kv-dir = "/tmp/sorted-kv-dir"
 
 [mydumper]
-data-source-dir = "/home/ec2-user/stage/TiDB-Administration-exercise-data/exercise-09"
+data-source-dir = "/home/ec2-user/stage/TiDB-Administration-exercise-data-v2/exercise-dumpling"
 filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
 
 [tidb]
