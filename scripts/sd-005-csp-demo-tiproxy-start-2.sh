@@ -1,8 +1,5 @@
 #!/bin/bash
-REGION_NAME=${1}
-
-# This script is for TiDB Quick Demo 005 - Online Upgrade.
-
+source ~/cloud-env.sh
 source ~/hosts-env.sh
 
 # Start TiProxy layer
