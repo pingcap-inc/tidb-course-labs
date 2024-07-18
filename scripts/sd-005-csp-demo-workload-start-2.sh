@@ -1,5 +1,5 @@
 #!/bin/bash
-TARINER=${1}
+TRAINER=${1}
 source ../cloud-env.sh
 
 LB_DNS_NAME=`aws elbv2 describe-load-balancers --names ${TRAINER}-demo-env-lb --query "LoadBalancers[0].DNSName" --output text --region ${REGION_CODE}`
