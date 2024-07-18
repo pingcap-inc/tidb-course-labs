@@ -7,7 +7,7 @@ REGION_CODE=${2}
 VPC_ID=`aws ec2 describe-vpcs --filters "Name=tag:Name,Values=${TRAINER}" --query "Vpcs[0].VpcId" --output text --region ${REGION_CODE}`
 
 DEMO_TG_ARN=`aws elbv2 describe-target-groups \
-  --names demo-target-group \
+  --names ${TRAINER} \
   --query "TargetGroups[0].TargetGroupArn" \
   --output text \
   --region ${REGION_CODE}`
