@@ -1,8 +1,8 @@
 #!/bin/bash
-
+TARINER=${1}
 source ../cloud-env.sh
 
-LB_DNS_NAME=`aws elbv2 describe-load-balancers --names demo-nlb --query "LoadBalancers[0].DNSName" --output text --region ${REGION_CODE}`
+LB_DNS_NAME=`aws elbv2 describe-load-balancers --names ${TRAINER}-demo-env-lb --query "LoadBalancers[0].DNSName" --output text --region ${REGION_CODE}`
 
 mysql -h ${LB_DNS_NAME} -P 6000 -uroot << EOF
 DROP TABLE IF EXISTS test.dummy; 
