@@ -5,6 +5,8 @@ REGION_NAME=${2}
 source ./cloud-env.sh
 ~/.tiup/bin/tiup mirror set https://tiup-mirrors.pingcap.com
 ~/.tiup/bin/tiup update --self
+~/.tiup/bin/tiup update cluster
+~/.tiup/bin/tiup mirror set tidb-community-server-${VERSION}-linux-amd64
 ./01-precheck-and-fix-nodes.sh ${REGION_NAME}
 
 # Creating the TiDB cluster named tidb-demo, version ${VERSION}
