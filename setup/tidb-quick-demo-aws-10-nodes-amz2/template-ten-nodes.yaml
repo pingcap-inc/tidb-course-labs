@@ -76,9 +76,3 @@ grafana_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
 alertmanager_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
-#pump_servers:
-#  - host: 127.0.0.1
-#drainer_servers:
-#  - host: 127.0.0.1
-#cdc_servers:
-#  - host: 127.0.0.1
