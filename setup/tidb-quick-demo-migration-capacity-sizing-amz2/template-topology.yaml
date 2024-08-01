@@ -34,3 +34,5 @@ grafana_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
 alertmanager_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
+tiproxy_servers:
+  - host: <HOST_MONITOR1_PRIVATE_IP>
