@@ -52,7 +52,6 @@ tikv_servers:
       server.labels:
         region: oregon
         zone: az1
-        storage-performance: high
   - host: <HOST_KV2_PRIVATE_IP>
     port: 20160
     status_port: 20180
@@ -60,7 +59,6 @@ tikv_servers:
       server.labels:
         region: oregon
         zone: az1
-        storage-performance: high
   - host: <HOST_KV3_PRIVATE_IP>
     port: 20160
     status_port: 20180
@@ -68,7 +66,6 @@ tikv_servers:
       server.labels:
         region: oregon
         zone: az1
-        storage-performance: high
 tiflash_servers:
   - host: <HOST_TIFLASH1_PRIVATE_IP>
     tcp_port: 9000
