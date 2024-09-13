@@ -1,0 +1,9 @@
+mysql-host=<HOST_DB1_PRIVATE_IP>
+mysql-port=4000 
+mysql-user=root 
+mysql-db=sbtest 
+mysql-password=
+time=600 
+threads=32 
+report-interval=10 
+db-driver=mysql
