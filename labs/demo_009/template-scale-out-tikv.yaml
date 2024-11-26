@@ -1,0 +1,4 @@
+tikv_servers:
+  - host: <HOST_KV4_PRIVATE_IP>
+    port: 20160
+    status_port: 20180
