@@ -4,16 +4,17 @@
 + Please ask your instructor for guidance on how to use the scripts in this repository.
 
 ## TiDB Trainings Provided by PingCAP
-+ [PingCAP Training & Certification (Japan)](https://pingcap.co.jp/education/)
-+ [PingCAP Training & Certification (Global)](https://pingcap.com/education/)
++ [TiDB Training & Certification (Japan)](https://pingcap.co.jp/education/)
++ [TiDB Training & Certification (Global)](https://tidb.io/education/)
 
 ## Folders Description
-+ Setup scripts for hands-on labs are in [setup](setup) folder.
++ Setup scripts for hands-on labs are in [labs](labs) folder.
 + General scripts are placed in [scripts](/scripts) folder.
 + All dependent assets support the scripts are placed in [misc](/scripts/misc) folder.
 
-## Additional Readings
+## Additional Resources
++ [TiDB | AI Assistant](https://tidb.ai)
 + [TiDB Documentation](https://docs.pingcap.com/)
 + [TiDB Developer Guide](https://docs.pingcap.com/tidb/stable/dev-guide-overview)
 
----------------------------------------------------------------------------------
+------------------------------------------------------------------------------
