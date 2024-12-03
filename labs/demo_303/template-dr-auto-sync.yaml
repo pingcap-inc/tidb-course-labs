@@ -25,53 +25,53 @@ tidb_servers:
     deploy_dir: "/tidb-deploy/tidb-4000"
     log_dir: "/tidb-deploy/tidb-4000/log"
 tikv_servers:
-  - host: <HOST_KV1_PRIVATE_IP>
+  - host: <HOST_AZ1KV1_PRIVATE_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc1",logic: "logic1",rack: "r1",host: "<HOST_KV1_PRIVATE_IP>" }
-  - host: <HOST_KV2_PRIVATE_IP>
+      server.labels: { dc: "dc1",logic: "logic1",rack: "r1",host: "<HOST_AZ1KV1_PRIVATE_IP>" }
+  - host: <HOST_AZ1KV2_PRIVATE_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc1",logic: "logic2",rack: "r1",host: "<HOST_KV2_PRIVATE_IP>" }
-  - host: <HOST_KV3_PRIVATE_IP>
+      server.labels: { dc: "dc1",logic: "logic2",rack: "r1",host: "<HOST_AZ1KV2_PRIVATE_IP>" }
+  - host: <HOST_AZ2KV1_PRIVATE_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc2",logic: "logic3",rack: "r1",host: "<HOST_KV3_PRIVATE_IP>" }
-  - host: <HOST_KV4_PRIVATE_IP>
+      server.labels: { dc: "dc2",logic: "logic3",rack: "r1",host: "<HOST_AZ2KV1_PRIVATE_IP>" }
+  - host: <HOST_AZ2KV2_PRIVATE_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc2",logic: "logic4",rack: "r1",host: "<HOST_KV4_PRIVATE_IP>" }
+      server.labels: { dc: "dc2",logic: "logic4",rack: "r1",host: "<HOST_AZ2KV2_PRIVATE_IP>" }
 pd_servers:
-  - host: <HOST_PD1_PRIVATE_IP>
+  - host: <HOST_AZ1PD1_PRIVATE_IP>
     client_port: 2379
     peer_port: 2380
     deploy_dir: "/tidb-deploy/pd-2379"
     data_dir: "/tidb-data/pd_data"
-    advertise_client_addr: "http://<HOST_PD1_PUBLIC_IP>:2379"
-  - host: <HOST_PD2_PRIVATE_IP>
+    advertise_client_addr: "http://<HOST_AZ1PD1_PUBLIC_IP>:2379"
+  - host: <HOST_AZ1PD2_PRIVATE_IP>
     client_port: 2379
     peer_port: 2380
     deploy_dir: "/tidb-deploy/pd-2379"
     data_dir: "/tidb-data/pd_data"
-    advertise_client_addr: "http://<HOST_PD2_PUBLIC_IP>:2379"
-  - host: <HOST_PD3_PRIVATE_IP>
+    advertise_client_addr: "http://<HOST_AZ1PD2_PUBLIC_IP>:2379"
+  - host: <HOST_AZ2PD1_PRIVATE_IP>
     client_port: 2379
     peer_port: 2380
     deploy_dir: "/tidb-deploy/pd-2379"
     data_dir: "/tidb-data/pd_data"
-    advertise_client_addr: "http://<HOST_PD3_PUBLIC_IP>:2379"
+    advertise_client_addr: "http://<HOST_AZ2PD1_PUBLIC_IP>:2379"
 monitoring_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
     port: 10090
