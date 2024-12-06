@@ -14,12 +14,12 @@ server_configs:
   pd:
     replication.location-labels: ["dc","logic","rack","host"]
 tidb_servers:
-  - host: <HOST_DB1_PRIVATE_IP>
+  - host: <HOST_AZ1DB1_PRIVATE_IP>
     port: 4000
     status_port: 10080
     deploy_dir: "/tidb-deploy/tidb-4000"
     log_dir: "/tidb-deploy/tidb-4000/log"
-  - host: <HOST_DB2_PRIVATE_IP>
+  - host: <HOST_AZ2DB1_PRIVATE_IP>
     port: 4000
     status_port: 10080
     deploy_dir: "/tidb-deploy/tidb-4000"
@@ -73,18 +73,18 @@ pd_servers:
     data_dir: "/tidb-data/pd_data"
     advertise_client_addr: "http://<HOST_AZ2PD1_PUBLIC_IP>:2379"
 monitoring_servers:
-  - host: <HOST_MONITOR1_PRIVATE_IP>
+  - host: <HOST_AZ1MONITOR1_PRIVATE_IP>
     port: 10090
     deploy_dir: "/tidb-deploy/prometheus-10090"
     data_dir: "/tidb-data/prometheus_data"
-  - host: <HOST_MONITOR2_PRIVATE_IP>
+  - host: <HOST_AZ2MONITOR1_PRIVATE_IP>
     port: 10090
     deploy_dir: "/tidb-deploy/prometheus-10090"
     data_dir: "/tidb-data/prometheus_data"
 grafana_servers:
-  - host: <HOST_MONITOR1_PRIVATE_IP>
+  - host: <HOST_AZ1MONITOR1_PRIVATE_IP>
     port: 3000
     deploy_dir: "/tidb-deploy/grafana-3000"
-  - host: <HOST_MONITOR2_PRIVATE_IP>
+  - host: <HOST_AZ2MONITOR1_PRIVATE_IP>
     port: 3000
     deploy_dir: "/tidb-deploy/grafana-3000"
