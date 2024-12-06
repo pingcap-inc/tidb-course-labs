@@ -19,7 +19,7 @@
         "id": "logic3",
         "start_key": "",
         "end_key": "",
-        "role": "voter",
+        "role": "follower",
         "count": 1,
         "location_labels": ["dc", "logic", "rack", "host"],
         "label_constraints": [{"key": "logic", "op": "in", "values": ["logic3"]}]
