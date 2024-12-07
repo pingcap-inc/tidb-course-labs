@@ -31,28 +31,28 @@ tikv_servers:
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc1",logic: "logic1",rack: "r1",host: "<HOST_R1KV1_PUBLIC_IP>" }
+      server.labels: { dc: "us-east-1",logic: "logic1",rack: "r1",host: "<HOST_R1KV1_PUBLIC_IP>" }
   - host: <HOST_R1KV2_PUBLIC_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc1",logic: "logic2",rack: "r1",host: "<HOST_R1KV2_PUBLIC_IP>" }
+      server.labels: { dc: "us-east-1",logic: "logic2",rack: "r1",host: "<HOST_R1KV2_PUBLIC_IP>" }
   - host: <HOST_R2KV1_PUBLIC_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc2",logic: "logic3",rack: "r1",host: "<HOST_R2KV1_PUBLIC_IP>" }
+      server.labels: { dc: "us-east-2",logic: "logic3",rack: "r1",host: "<HOST_R2KV1_PUBLIC_IP>" }
   - host: <HOST_R2KV2_PUBLIC_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "dc2",logic: "logic4",rack: "r1",host: "<HOST_R2KV2_PUBLIC_IP>" }
+      server.labels: { dc: "us-east-2",logic: "logic4",rack: "r1",host: "<HOST_R2KV2_PUBLIC_IP>" }
 pd_servers:
   - host: <HOST_R1PD1_PUBLIC_IP>
     client_port: 2379
