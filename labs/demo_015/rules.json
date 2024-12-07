@@ -1,0 +1,78 @@
+[
+  {
+    "group_id": "pd",
+    "group_index": 0,
+    "group_override": false,
+    "rules": [
+      {
+        "group_id": "pd",
+        "id": "dc1",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 2,
+        "location_labels": [
+          "dc",
+          "logic",
+          "rack",
+          "host"
+        ],
+        "label_constraints": [
+          {
+            "key": "dc",
+            "op": "in",
+            "values": [
+              "dc1"
+            ]
+          }
+        ]
+      },
+      {
+        "group_id": "pd",
+        "id": "logic3",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 1,
+        "location_labels": [
+          "dc",
+          "logic",
+          "rack",
+          "host"
+        ],
+        "label_constraints": [
+          {
+            "key": "logic",
+            "op": "in",
+            "values": [
+              "logic3"
+            ]
+          }
+        ]
+      },
+      {
+        "group_id": "pd",
+        "id": "logic4",
+        "start_key": "",
+        "end_key": "",
+        "role": "learner",
+        "count": 1,
+        "location_labels": [
+          "dc",
+          "logic",
+          "rack",
+          "host"
+        ],
+        "label_constraints": [
+          {
+            "key": "logic",
+            "op": "in",
+            "values": [
+              "logic4"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
