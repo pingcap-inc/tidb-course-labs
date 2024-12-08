@@ -65,26 +65,3 @@ pd_servers:
     deploy_dir: "/tidb-deploy/pd-2379"
     data_dir: "/tidb-data/pd_data"
     advertise_client_addr: "http://<HOST_R3PD1_PUBLIC_IP>:2379"
-monitoring_servers:
-  - host: <HOST_R1MONITOR1_PUBLIC_IP>
-    port: 10090
-    deploy_dir: "/tidb-deploy/prometheus-10090"
-    data_dir: "/tidb-data/prometheus_data"
-  - host: <HOST_R2MONITOR1_PUBLIC_IP>
-    port: 10090
-    deploy_dir: "/tidb-deploy/prometheus-10090"
-    data_dir: "/tidb-data/prometheus_data"
-  - host: <HOST_R3MONITOR1_PUBLIC_IP>
-    port: 10090
-    deploy_dir: "/tidb-deploy/prometheus-10090"
-    data_dir: "/tidb-data/prometheus_data"
-grafana_servers:
-  - host: <HOST_R1MONITOR1_PUBLIC_IP>
-    port: 3000
-    deploy_dir: "/tidb-deploy/grafana-3000"
-  - host: <HOST_R2MONITOR1_PUBLIC_IP>
-    port: 3000
-    deploy_dir: "/tidb-deploy/grafana-3000"
-  - host: <HOST_R3MONITOR1_PUBLIC_IP>
-    port: 3000
-    deploy_dir: "/tidb-deploy/grafana-3000"
