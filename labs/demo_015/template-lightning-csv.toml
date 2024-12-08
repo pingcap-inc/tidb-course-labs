@@ -1,0 +1,29 @@
+[lightning]
+level = "info"
+file = "tidb-lightning-csv.log"
+
+[tikv-importer]
+backend = "local"
+sorted-kv-dir = "/tmp/sorted-kv-dir"
+
+[mydumper]
+data-source-dir = "/home/ec2-user/xpoints_v2"
+filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+
+[mydumper.csv]
+separator = ','
+delimiter = '"'
+terminator = ""
+header = false
+not-null = false
+null = '\N'
+backslash-escape = true
+trim-last-separator = false
+
+[tidb]
+host = "<HOST_R2DB1_PUBLIC_IP>"
+port = 4000
+user = "ltask"
+password = "q1w2e3R4_"
+status-port = 10080
+pd-addr = "<HOST_R2PD1_PUBLIC_IP>:2379"

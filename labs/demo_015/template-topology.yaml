@@ -12,7 +12,7 @@ monitored:
   log_dir: "/tidb-deploy/monitor-9100/log"
 server_configs:
   pd:
-    replication.location-labels: ["dc"]
+    replication.location-labels: ["region"]
 tidb_servers:
   - host: <HOST_R1DB1_PUBLIC_IP>
     port: 4000
@@ -31,21 +31,21 @@ tikv_servers:
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "us-east-1" }
+      server.labels: { region: "us-east-1" }
   - host: <HOST_R2KV1_PUBLIC_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "us-east-2" }
+      server.labels: { region: "us-east-2" }
   - host: <HOST_R3KV1_PUBLIC_IP>
     port: 20160
     status_port: 20180
     deploy_dir: "/tidb-deploy/tikv-20160"
     data_dir: "/tidb-data/tikv_data"
     config:
-      server.labels: { dc: "us-west-2" }
+      server.labels: { region: "us-west-2" }
 pd_servers:
   - host: <HOST_R1PD1_PUBLIC_IP>
     client_port: 2379
