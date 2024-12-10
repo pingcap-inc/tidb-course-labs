@@ -1,0 +1,7 @@
+pd_servers:
+  - host: <HOST_AZ2PD2_PRIVATE_IP>
+    client_port: 2379
+    peer_port: 2380
+    deploy_dir: "/tidb-deploy/pd-2379"
+    data_dir: "/tidb-data/pd_data"
+    advertise_client_addr: "http://<HOST_AZ2PD2_PUBLIC_IP>:2379"
