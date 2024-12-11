@@ -1,0 +1,19 @@
+[
+  {
+    "group_id": "pd",
+    "group_index": 0,
+    "group_override": false,
+    "rules": [
+      {
+        "group_id": "pd",
+        "id": "voters",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 3,
+        "location_labels": ["dc","logic","rack", "host"]
+       
+      }
+    ]
+  }
+]
