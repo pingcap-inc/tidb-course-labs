@@ -180,7 +180,8 @@ UNLOCK TABLES;
 -- Table structure for table `books`
 --
 
-CREATE PLACEMENT POLICY us_east_1 PRIMARY_REGION = "us-east-1" REGIONS = "us-east-1,us-east-2" FOLLOWERS = 2;
+-- CREATE PLACEMENT POLICY us_east_1 PRIMARY_REGION = "us-east-1" REGIONS = "us-east-1,us-east-2" FOLLOWERS = 2;
+-- CREATE PLACEMENT POLICY us_east_2 PRIMARY_REGION = "us-east-2" REGIONS = "us-east-2,us-east-1" FOLLOWERS = 2;
 DROP TABLE IF EXISTS `books`;
 CREATE TABLE `books` (
   `id` bigint(20) AUTO_RANDOM,
@@ -201,7 +202,7 @@ CREATE TABLE `books` (
   `stock` int(11) DEFAULT '0',
   `price` decimal(15, 2) DEFAULT '0.0',
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci PLACEMENT POLICY = us_east_1;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 LOCK TABLES `books` WRITE;
 INSERT INTO `books`
 VALUES (
