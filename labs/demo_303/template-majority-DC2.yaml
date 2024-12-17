@@ -1,52 +1,55 @@
-global:
-  user: "ec2-user"
-  ssh_port: 22
-  deploy_dir: "/tidb-deploy"
-  data_dir: "/tidb-data"
-  arch: "amd64"
-monitored:
-  node_exporter_port: 9100
-  blackbox_exporter_port: 9115
-  deploy_dir: "/tidb-deploy/monitored-9100"
-  data_dir: "/tidb-data/monitor_9115"
-  log_dir: "/tidb-deploy/monitor-9100/log"
-server_configs:
-  pd:
-    replication.location-labels: ["dc","logic","rack","host"]
-tidb_servers:
-  - host: <HOST_AZ2DB1_PRIVATE_IP>
-    port: 4000
-    status_port: 10080
-    deploy_dir: "/tidb-deploy/tidb-4000"
-    log_dir: "/tidb-deploy/tidb-4000/log"
-tikv_servers:
-  - host: <HOST_AZ2KV1_PRIVATE_IP>
-    port: 20160
-    status_port: 20180
-    deploy_dir: "/tidb-deploy/tikv-20160"
-    data_dir: "/tidb-data/tikv_data"
-    config:
-      server.labels: { dc: "dc2",logic: "logic3",rack: "r1",host: "<HOST_AZ2KV1_PRIVATE_IP>" }
-  - host: <HOST_AZ2KV2_PRIVATE_IP>
-    port: 20160
-    status_port: 20180
-    deploy_dir: "/tidb-deploy/tikv-20160"
-    data_dir: "/tidb-data/tikv_data"
-    config:
-      server.labels: { dc: "dc2",logic: "logic4",rack: "r1",host: "<HOST_AZ2KV2_PRIVATE_IP>" }
-pd_servers:
-  - host: <HOST_AZ2PD1_PRIVATE_IP>
-    client_port: 2379
-    peer_port: 2380
-    deploy_dir: "/tidb-deploy/pd-2379"
-    data_dir: "/tidb-data/pd_data"
-    advertise_client_addr: "http://<HOST_AZ2PD1_PUBLIC_IP>:2379"
-monitoring_servers:
-  - host: <HOST_AZ2MONITOR1_PRIVATE_IP>
-    port: 10090
-    deploy_dir: "/tidb-deploy/prometheus-10090"
-    data_dir: "/tidb-data/prometheus_data"
-grafana_servers:
-  - host: <HOST_AZ2MONITOR1_PRIVATE_IP>
-    port: 3000
-    deploy_dir: "/tidb-deploy/grafana-3000"
+user: ec2-user
+tidb_version: ${VERSION}
+topology:
+  global:
+    user: "ec2-user"
+    ssh_port: 22
+    deploy_dir: "/tidb-deploy"
+    data_dir: "/tidb-data"
+    arch: "amd64"
+  monitored:
+    node_exporter_port: 9100
+    blackbox_exporter_port: 9115
+    deploy_dir: "/tidb-deploy/monitored-9100"
+    data_dir: "/tidb-data/monitor_9115"
+    log_dir: "/tidb-deploy/monitor-9100/log"
+  server_configs:
+    pd:
+      replication.location-labels: ["dc","logic","rack","host"]
+  tidb_servers:
+    - host: <HOST_AZ2DB1_PRIVATE_IP>
+      port: 4000
+      status_port: 10080
+      deploy_dir: "/tidb-deploy/tidb-4000"
+      log_dir: "/tidb-deploy/tidb-4000/log"
+  tikv_servers:
+    - host: <HOST_AZ2KV1_PRIVATE_IP>
+      port: 20160
+      status_port: 20180
+      deploy_dir: "/tidb-deploy/tikv-20160"
+      data_dir: "/tidb-data/tikv_data"
+      config:
+        server.labels: { dc: "dc2",logic: "logic3",rack: "r1",host: "<HOST_AZ2KV1_PRIVATE_IP>" }
+    - host: <HOST_AZ2KV2_PRIVATE_IP>
+      port: 20160
+      status_port: 20180
+      deploy_dir: "/tidb-deploy/tikv-20160"
+      data_dir: "/tidb-data/tikv_data"
+      config:
+        server.labels: { dc: "dc2",logic: "logic4",rack: "r1",host: "<HOST_AZ2KV2_PRIVATE_IP>" }
+  pd_servers:
+    - host: <HOST_AZ2PD1_PRIVATE_IP>
+      client_port: 2379
+      peer_port: 2380
+      deploy_dir: "/tidb-deploy/pd-2379"
+      data_dir: "/tidb-data/pd_data"
+      advertise_client_addr: "http://<HOST_AZ2PD1_PUBLIC_IP>:2379"
+  monitoring_servers:
+    - host: <HOST_AZ2MONITOR1_PRIVATE_IP>
+      port: 10090
+      deploy_dir: "/tidb-deploy/prometheus-10090"
+      data_dir: "/tidb-data/prometheus_data"
+  grafana_servers:
+    - host: <HOST_AZ2MONITOR1_PRIVATE_IP>
+      port: 3000
+      deploy_dir: "/tidb-deploy/grafana-3000"
