@@ -1,5 +1,5 @@
 user: ec2-user
-tidb_version: ${VERSION}
+tidb_version: v8.1.1
 topology:
   global:
     user: "ec2-user"
