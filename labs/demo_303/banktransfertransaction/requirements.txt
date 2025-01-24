@@ -1,0 +1,20 @@
+# database connection
+mysql-connector-python>=8.0.0
+
+# python env
+python-dotenv>=0.19.0
+
+# date tool
+pytz>=2021.1
+
+# test framework
+pytest>=6.0.0
+pytest-cov>=2.0.0
+
+# type
+typing-extensions>=3.7.4
+
+# dev tool
+black>=21.0  # code format
+flake8>=3.9.0  # code checker
+isort>=5.9.0  # import statement management 
