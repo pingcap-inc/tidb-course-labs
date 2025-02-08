@@ -4,4 +4,4 @@
 
 ./playground-clean-classroom.sh
 
-tiup playground v6.1.0 --tag classroom --db 3 --pd 3 --kv 3 --tiflash 1
+tiup playground v8.5.0 --tag classroom --db 3 --pd 3 --kv 3 --tiflash 1

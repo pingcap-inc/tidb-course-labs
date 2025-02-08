@@ -1,6 +1,6 @@
 from mysql.connector import connect
 from mysql.connector import Error
-from _mysql_connector import MySQLInterfaceError
+# from _mysql_connector import MySQLInterfaceError
 import time
 
 db_ports = [4000, 4001, 4002]
@@ -34,7 +34,8 @@ def _clean(cursor, conn):
     try:
         cursor.close()
         conn.close()
-    except (Error, MySQLInterfaceError) as connect_err:
+#    except (Error, MySQLInterfaceError) as connect_err:
+    except (Error) as connect_err:
         None
     time.sleep(1)
 
@@ -82,7 +83,8 @@ while True:
                     break
                 else:
                     None  # Try again
-    except (Error, MySQLInterfaceError) as connect_err:
+    # except (Error, MySQLInterfaceError) as connect_err:
+    except (Error) as connect_err:
         print("CONNECT Error:", connect_err)
         # _print_error(connect_err)
         if not _can_telerate_conn_error(connect_err):  # The client program will exit.
