@@ -9,7 +9,7 @@ source ./cloud-env.sh
 
 # Creating the TiDB cluster named tidb-demo, version ${VERSION}
 # ~/.tiup/bin/tiup mirror set https://tiup-mirrors.pingcap.com
-~/.tiup/bin/tiup cluster deploy tidb-demo ${VERSION} ./nine-nodes.yaml --user ec2-user -i /home/ec2-user/.ssh/pe-class-key-${REGION_NAME}.pem --yes
+~/.tiup/bin/tiup cluster deploy tidb-demo ${VERSION} ./five-nodes.yaml --user ec2-user -i /home/ec2-user/.ssh/pe-class-key-${REGION_NAME}.pem --yes
 
 sleep 3;
 
