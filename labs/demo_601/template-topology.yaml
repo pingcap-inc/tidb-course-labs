@@ -11,7 +11,7 @@ server_configs:
     security.auto-tls: true
     graceful-wait-before-shutdown: 10
   tikv:
-    in-memory-engine: true
+    in-memory-engine.enable: false
 pd_servers:
   - host: <HOST_PD1_PRIVATE_IP>
     client_port: 2379
