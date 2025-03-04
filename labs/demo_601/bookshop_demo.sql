@@ -187,7 +187,7 @@ UNLOCK TABLES;
 -- CREATE PLACEMENT POLICY us_east_2 PRIMARY_REGION = "us-east-2" REGIONS = "us-east-2,us-east-1" FOLLOWERS = 2;
 DROP TABLE IF EXISTS `books`;
 CREATE TABLE `books` (
-    `id` bigint(20) AUTO_RANDOM,
+    `id` bigint AUTO_RANDOM,
     `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
     `type` enum(
         'Magazine',
@@ -202,10 +202,10 @@ CREATE TABLE `books` (
         'Sports'
     ) COLLATE utf8mb4_unicode_ci NOT NULL,
     `published_at` datetime NOT NULL,
-    `stock` int(11) DEFAULT '0',
+    `stock` int DEFAULT '0',
     `price` decimal(15, 2) DEFAULT '0.0',
     PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) PARTITION BY HASH (`id`) PARTITIONS 8;
 LOCK TABLES `books` WRITE;
 INSERT INTO `books`
 VALUES (
