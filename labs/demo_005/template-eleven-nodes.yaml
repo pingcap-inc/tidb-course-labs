@@ -52,4 +52,3 @@ alertmanager_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
 tiproxy_servers:
   - host: <HOST_TIPROXY1_PRIVATE_IP>
-  - host: <HOST_TIPROXY2_PRIVATE_IP>
