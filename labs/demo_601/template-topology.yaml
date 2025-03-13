@@ -38,6 +38,13 @@ tikv_servers:
   - host: <HOST_KV3_PRIVATE_IP>
     port: 20160
     status_port: 20180
+tiflash_servers:
+  - host: <HOST_TIFLASH1_PRIVATE_IP>
+    tcp_port: 9000
+    flash_service_port: 3930
+    deploy_dir: /tidb-deploy/tiflash-9000
+    data_dir: /tidb-data/tiflash-9000
+    log_dir: /tidb-deploy/tiflash-9000/log
 monitoring_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
 grafana_servers:
