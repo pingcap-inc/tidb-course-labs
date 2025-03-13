@@ -6,35 +6,6 @@ CREATE DATABASE bookshop;
 USE bookshop;
 SET @@allow_auto_random_explicit_insert = true;
 --
--- Table structure for table `_prisma_migrations`
---
-
-DROP TABLE IF EXISTS `_prisma_migrations`;
-CREATE TABLE `_prisma_migrations` (
-    `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `checksum` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `finished_at` datetime(3) DEFAULT NULL,
-    `migration_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `logs` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `rolled_back_at` datetime(3) DEFAULT NULL,
-    `started_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `applied_steps_count` int(10) unsigned NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-LOCK TABLES `_prisma_migrations` WRITE;
-INSERT INTO `_prisma_migrations`
-VALUES (
-        'ece8e873-0049-4d8f-bd49-9b4572ce570e',
-        '578a2ebb59b69eab735de6cb3785cdfff7fbbbe2d155d7803980cf2365aa490a',
-        '2023-08-11 19:30:23.735',
-        '20220801143955_init',
-        NULL,
-        NULL,
-        '2023-08-11 19:30:11.199',
-        1
-    );
-UNLOCK TABLES;
---
 -- Table structure for table `authors`
 --
 
