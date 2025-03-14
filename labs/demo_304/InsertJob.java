@@ -19,12 +19,12 @@ import java.sql.SQLException;
 
 public class InsertJob {
 
-    static String MAIN_TASK = "INSERT INTO sbtest1000.sbtest9 (id, k, c, pad) VALUES (?, 0, 'A', 'B');";
+    static String MAIN_TASK = "INSERT INTO sbtest1000.sbtest9 (k, c, pad) VALUES (?, 'A', 'B');";
 
     public static void newRecord(Connection conn, PreparedStatement ps, int round) {
         System.out.println("Inserting " + round);
         try {
-            ps.setInt(0, round);
+            ps.setInt(1, round);
             ps.executeUpdate();
             try {
                 Thread.sleep(1000);
@@ -46,6 +46,9 @@ public class InsertJob {
                 } catch (SQLException e1) {
                     System.out.println("Unhandled situation.");
                 }
+            } else {
+                e.printStackTrace();
+                System.exit(1);
             }
         }
     }
@@ -59,7 +62,7 @@ public class InsertJob {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + tidbHost + ":" + port + "/demo?useServerPrepStmts=true&cachePrepStmts=true",
+                    "jdbc:mysql://" + tidbHost + ":" + port + "/sbtest1000?useServerPrepStmts=true&cachePrepStmts=true",
                     dbUsername,
                     dbPassword);
             connection.setAutoCommit(false);
