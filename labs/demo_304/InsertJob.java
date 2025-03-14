@@ -75,6 +75,7 @@ public class InsertJob {
             }
         } catch (SQLException e) {
             System.out.println("Cannot connect to TiDB server instance.");
+            e.printStackTrace();
         }
     }
 }
