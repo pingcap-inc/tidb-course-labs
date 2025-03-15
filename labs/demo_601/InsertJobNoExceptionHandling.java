@@ -57,7 +57,7 @@ class Worker implements Runnable {
     }
 }
 
-public class InsertJobNoTry {
+public class InsertJobNoExceptionHandling {
     public static void main(String[] args) throws InterruptedException, SQLException {
         String tidbHost = args[0];
         String port = args[1];
