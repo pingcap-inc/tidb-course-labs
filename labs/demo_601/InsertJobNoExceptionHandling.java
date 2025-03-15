@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 class Worker implements Runnable {
 
-    static String MAIN_TASK = "INSERT INTO test.tiproxy_test (tidb_server_instance) VALUES (SELECT instance FROM information_schema.cluster_processlist WHERE host=(SELECT host FROM information_schema.processlist WHERE id=CONNECTION_ID()));";
+    static String MAIN_TASK = "INSERT INTO test.tiproxy_test (tidb_server_instance) VALUES ((SELECT instance FROM information_schema.cluster_processlist WHERE host=(SELECT host FROM information_schema.processlist WHERE id=CONNECTION_ID())))";
 
     String tidbHost;
     String port;
@@ -52,7 +52,7 @@ class Worker implements Runnable {
                 i++;
             }
         } catch (Exception e) {
-            System.out.println("Exception encountered.");
+            e.printStackTrace();
             System.exit(1);
         }
     }
