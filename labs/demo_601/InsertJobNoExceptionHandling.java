@@ -53,6 +53,7 @@ class Worker implements Runnable {
             }
         } catch (Exception e) {
             System.out.println("Exception encountered.");
+            System.exit(1);
         }
     }
 }
