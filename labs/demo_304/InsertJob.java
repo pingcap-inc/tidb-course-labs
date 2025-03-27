@@ -36,9 +36,9 @@ public class InsertJob {
             if (e.getErrorCode() == 8028) {
                 System.out.println("Schema mutation encountered, retry ...");
                 try {
-                    ps.executeUpdate();
                     try {
                         Thread.sleep(1000);
+                        ps.executeUpdate();
                     } catch (InterruptedException e2) {
                         e.printStackTrace();
                     }
