@@ -76,6 +76,6 @@ tiflash_servers:
 monitoring_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
 grafana_servers:
-  - host: <HOST_MONITOR1_PUBLIC_IP>
+  - host: <HOST_MONITOR1_PRIVATE_IP>
 alertmanager_servers:
   - host: <HOST_MONITOR1_PRIVATE_IP>
