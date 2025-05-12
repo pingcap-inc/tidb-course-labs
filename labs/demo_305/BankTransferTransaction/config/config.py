@@ -10,8 +10,8 @@ DATABASE_CONFIG = {
 
 # Initiate db
 TEST_DATABASE_CONFIG = {
-    "host": 6one,
-    "port": 4000,
+    "host": None,
+    "port": 6000,
     "user": "root",
     "database": "test"
 }
