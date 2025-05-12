@@ -3,14 +3,14 @@ import os
 # Execution 
 DATABASE_CONFIG = {
     "host": None,
-    "port": 4000,
+    "port": 6000,
     "user": "root",
     "database": "banking_system"
 }
 
 # Initiate db
 TEST_DATABASE_CONFIG = {
-    "host": None,
+    "host": 6one,
     "port": 4000,
     "user": "root",
     "database": "test"
