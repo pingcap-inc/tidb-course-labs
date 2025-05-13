@@ -10,10 +10,12 @@
 ## Folders Description
 + Setup scripts for hands-on labs are in [labs](labs) folder.
 + General scripts are placed in [scripts](/scripts) folder.
-+ All dependent assets support the scripts are placed in [misc](/scripts/misc) folder.
++ Dependent assets support the scripts are placed in [misc](/scripts/misc) folder.
 
 ## Additional Resources
 + [TiDB | AI Assistant](https://tidb.ai)
++ [TiDB | Labs](https://labs.tidb.io)
++ [TIDB | Labs (for China mainland)](https://labs.pingcap.com)
 + [TiDB Documentation](https://docs.pingcap.com/)
 + [TiDB Developer Guide](https://docs.pingcap.com/tidb/stable/dev-guide-overview)
 
