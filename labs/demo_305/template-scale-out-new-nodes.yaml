@@ -1,0 +1,15 @@
+pd_servers:
+  - host: <HOST_PD4_PRIVATE_IP>
+    client_port: 2379
+    peer_port: 2380
+    advertise_client_addr: "http://<HOST_PD4_PUBLIC_IP>:2379"
+tidb_servers:
+  - host: <HOST_DB3_PRIVATE_IP>
+    port: 4000
+    status_port: 10080
+    deploy_dir: /tidb-deploy/tidb-4000
+    log_dir: /tidb-deploy/tidb-4000/log
+tikv_servers:
+  - host: <HOST_KV4_PRIVATE_IP>
+    port: 20160
+    status_port: 20180
