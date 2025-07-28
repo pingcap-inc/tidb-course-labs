@@ -17,6 +17,7 @@ def database_worker(thread_id):
                 port=4000,
                 user="root",
                 password="<your password>",
+                ssl_ca="/home/ubuntu/ca.pem",
                 ssl_verify_cert=True,
                 ssl_verify_identity=True,
             )
