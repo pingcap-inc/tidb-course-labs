@@ -1,0 +1,6 @@
+tidb_servers:
+  - host: <HOST_DB1_PRIVATE_IP>
+    port: 4000
+    status_port: 10080
+    deploy_dir: /tidb-deploy/tidb-4000
+    log_dir: /tidb-deploy/tidb-4000/log
