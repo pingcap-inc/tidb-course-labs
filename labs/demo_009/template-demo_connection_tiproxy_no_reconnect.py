@@ -10,7 +10,7 @@ if __name__ == "__main__":
         try:
             conn = connect(
                 database="test",
-                host="10.90.4.253",
+                host="<HOST_TIPROXY1_PRIVATE_IP>",
                 port=6000,
                 user="root",
                 password="",

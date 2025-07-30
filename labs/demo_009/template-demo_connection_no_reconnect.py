@@ -10,7 +10,7 @@ if __name__ == "__main__":
         try:
             conn = connect(
                 database="test",
-                host="${LAB:HOST_DB1_PRIVATE_IP}",
+                host="<HOST_DB1_PRIVATE_IP>",
                 port=4000,
                 user="root",
                 password="",
