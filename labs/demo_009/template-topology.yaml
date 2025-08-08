@@ -4,8 +4,6 @@ global:
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
   arch: "amd64"
-component_versions:
-  tiproxy: "v1.3.2"
 server_configs:
   pd:
     replication.max-replicas: 3
