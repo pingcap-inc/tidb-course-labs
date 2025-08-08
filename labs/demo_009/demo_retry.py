@@ -7,7 +7,7 @@ import threading
 import sys
 from functools import wraps
 
-def retry(max_attempts=2, delay=3):
+def retry(max_attempts=5, delay=5):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -24,7 +24,7 @@ def retry(max_attempts=2, delay=3):
         return wrapper
     return decorator
 
-@retry(max_attempts=2, delay=3)
+@retry(max_attempts=5, delay=5)
 def execute_database_operation(thread_id):
 
     conn = connect(
