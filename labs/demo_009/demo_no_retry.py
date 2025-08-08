@@ -29,7 +29,7 @@ def database_worker(thread_id):
             time.sleep(4)
 
             try:
-                cursor.execute("COMMIT")
+                conn.commit()
                 print(f"Thread {thread_id}: Committed. user {random_id} balance updated to: {random_integer}")
             except Error as e:
                 print(f"Thread {thread_id}: Error during query execution: {e}")
