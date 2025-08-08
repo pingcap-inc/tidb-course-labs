@@ -43,7 +43,7 @@ def execute_database_operation(thread_id):
 
         cursor.execute("BEGIN")
         cursor.execute(query)
-        time.sleep(8)
+        time.sleep(4)
 
         try:
             cursor.execute("COMMIT")
