@@ -25,11 +25,11 @@ def retry(max_attempts=5, delay=5):
     return decorator
 
 @retry(max_attempts=5, delay=5)
-def execute_database_operation(thread_id):
+def execute_database_operation(thread_id, lb_dns):
 
     conn = connect(
         database="test",
-        host="<LB_DNS>",
+        host=lb_dns,
         port=4000,
         user="root",
         password="",
@@ -59,26 +59,34 @@ def execute_database_operation(thread_id):
         except Error as e:
             pass
 
-def database_worker(thread_id):
+def database_worker(thread_id, lb_dns):
     """Worker function that continuously executes database operations"""
     while True:
         try:
-            execute_database_operation(thread_id)
+            execute_database_operation(thread_id, lb_dns)
         except Exception as e:
             print(f"Thread {thread_id}: Operation failed after all retries: {e}")
             # Small delay before continuing to next iteration
             time.sleep(0.5)
 
 def main():
+    # Check command line arguments
+    if len(sys.argv) != 2:
+        print("Usage: python3 demo_retry.py <LB_DNS>")
+        print("Example: python3 demo_retry.py tidb-cluster.example.com")
+        sys.exit(1)
+
+    lb_dns = sys.argv[1]
     num_threads = 4
 
     print(f"Starting {num_threads} database worker threads...")
+    print(f"Connecting to: {lb_dns}")
 
     threads = []
     for i in range(num_threads):
         thread = threading.Thread(
             target=database_worker,
-            args=(i + 1,),
+            args=(i + 1, lb_dns),
             daemon=True
         )
         threads.append(thread)

@@ -6,14 +6,14 @@ import time
 import threading
 import sys
 
-def database_worker(thread_id):
+def database_worker(thread_id, lb_dns):
 
     while True:
         try:
 
             conn = connect(
                 database="test",
-                host="<LB_DNS>",
+                host=lb_dns,
                 port=4000,
                 user="root",
                 password="",
@@ -44,16 +44,24 @@ def database_worker(thread_id):
 
 
 def main():
+    # Check command line arguments
+    if len(sys.argv) != 2:
+        print("Usage: python3 demo_no_retry.py <LB_DNS>")
+        print("Example: python3 demo_no_retry.py tidb-cluster.example.com")
+        sys.exit(1)
+
+    lb_dns = sys.argv[1]
     num_threads = 4
 
     print(f"Starting {num_threads} database worker threads...")
+    print(f"Connecting to: {lb_dns}")
 
     # Create and start threads
     threads = []
     for i in range(num_threads):
         thread = threading.Thread(
             target=database_worker,
-            args=(i + 1,),
+            args=(i + 1, lb_dns),
             daemon=True
         )
         threads.append(thread)
