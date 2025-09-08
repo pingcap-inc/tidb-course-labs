@@ -1,5 +1,5 @@
 user: ec2-user
-tidb_version: v8.1.1
+tidb_version: v<TIDB_VERSION>
 topology:
   global:
     user: "ec2-user"
@@ -15,7 +15,7 @@ topology:
     log_dir: "/tidb-deploy/monitor-9100/log"
   server_configs:
     pd:
-      replication.location-labels: ["dc","logic","rack","host"]
+      replication.location-labels: ["dc", "logic", "rack", "host"]
   tidb_servers:
     - host: <HOST_AZ2DB1_PRIVATE_IP>
       port: 4000
@@ -29,14 +29,26 @@ topology:
       deploy_dir: "/tidb-deploy/tikv-20160"
       data_dir: "/tidb-data/tikv_data"
       config:
-        server.labels: { dc: "dc2",logic: "logic3",rack: "r1",host: "<HOST_AZ2KV1_PRIVATE_IP>" }
+        server.labels:
+          {
+            dc: "dc2",
+            logic: "logic3",
+            rack: "r1",
+            host: "<HOST_AZ2KV1_PRIVATE_IP>",
+          }
     - host: <HOST_AZ2KV2_PRIVATE_IP>
       port: 20160
       status_port: 20180
       deploy_dir: "/tidb-deploy/tikv-20160"
       data_dir: "/tidb-data/tikv_data"
       config:
-        server.labels: { dc: "dc2",logic: "logic4",rack: "r1",host: "<HOST_AZ2KV2_PRIVATE_IP>" }
+        server.labels:
+          {
+            dc: "dc2",
+            logic: "logic4",
+            rack: "r1",
+            host: "<HOST_AZ2KV2_PRIVATE_IP>",
+          }
   pd_servers:
     - host: <HOST_AZ2PD1_PRIVATE_IP>
       client_port: 2379
