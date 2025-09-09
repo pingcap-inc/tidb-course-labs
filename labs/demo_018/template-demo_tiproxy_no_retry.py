@@ -25,6 +25,13 @@ def database_worker(thread_id):
             server_info = cursor.fetchone()
             hostname, port, connection_id = server_info
 
+            # Extract IP address from hostname (format: ip-10-90-2-124.ap-northeast-1.compute.internal)
+            if hostname.startswith('ip-'):
+                ip_parts = hostname.split('.')[0].split('-')[1:]  # Split by '.' then by '-', skip 'ip'
+                ip_address = '.'.join(ip_parts)
+            else:
+                ip_address = hostname  # Fallback to original hostname if format is unexpected
+
             random_integer = random.randint(0, 10)
             random_id=random.randint(1, 10)
             query = "UPDATE test.users SET balance = " + str(random_integer) + " WHERE id = " + str(random_id) + ";"
@@ -35,9 +42,9 @@ def database_worker(thread_id):
 
             try:
                 cursor.execute("COMMIT")
-                print(f"Thread {thread_id}: Connected to TiDB server {hostname}:{port}. User {random_id} balance updated to: {random_integer}")
+                print(f"Thread {thread_id}: Connected to TiDB server {ip_address}:{port}. User {random_id} balance updated to: {random_integer}")
             except Error as e:
-                print(f"Thread {thread_id}: Connected to TiDB server {hostname}:{port}. Error during query execution: {e}")
+                print(f"Thread {thread_id}: Connected to TiDB server {ip_address}:{port}. Error during query execution: {e}")
             try:
                 cursor.close()
                 conn.close()
