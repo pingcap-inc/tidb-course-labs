@@ -1,0 +1,4 @@
+requests
+azure-functions
+azure-storage-file-datalake
+azure-identity
