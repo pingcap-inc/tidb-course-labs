@@ -1,4 +1,4 @@
-/* 
+/*
  *	Created by Engagement Innovation.
  */
 DROP DATABASE IF EXISTS bookshop;
@@ -176,7 +176,7 @@ CREATE TABLE `books` (
     `stock` int DEFAULT '0',
     `price` decimal(15, 2) DEFAULT '0.0',
     PRIMARY KEY (`id`)
-) PARTITION BY HASH (`id`) PARTITIONS 8;
+);
 LOCK TABLES `books` WRITE;
 INSERT INTO `books`
 VALUES (
