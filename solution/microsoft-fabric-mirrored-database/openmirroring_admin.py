@@ -470,6 +470,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--table-name", type=str, default=target_table_name, help="Name of the table")
     parser.add_argument("--local-file-path", type=str, default=None, help="Local file path for upload")
+    parser.add_argument("--as-file-name", type=str, default=None, help="Local file path for upload")
     parser.add_argument("--remove-schema-folder", action="store_true", help="Remove schema folder when dropping table")
 
     args = parser.parse_args()
