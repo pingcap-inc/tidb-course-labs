@@ -972,7 +972,7 @@ VALUES (
 --
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
-    `id` bigint(20) NOT NULL,
+    `id` bigint(20) AUTO_RANDOM,
     `book_id` bigint(20) NOT NULL,
     `user_id` bigint(20) NOT NULL,
     `quality` tinyint(4) NOT NULL,
