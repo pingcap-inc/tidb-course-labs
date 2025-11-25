@@ -4,11 +4,11 @@ SET @@allow_auto_random_explicit_insert = true;
 --
 DROP TABLE IF EXISTS `authors`;
 CREATE TABLE `authors` (
-    `id` bigint(20) AUTO_RANDOM,
+    `id` bigint AUTO_RANDOM,
     `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `gender` tinyint(1) DEFAULT NULL,
-    `birth_year` smallint(6) DEFAULT NULL,
-    `death_year` smallint(6) DEFAULT NULL,
+    `gender` tinyint DEFAULT NULL,
+    `birth_year` smallint DEFAULT NULL,
+    `death_year` smallint DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 INSERT INTO `authors`
@@ -37,8 +37,8 @@ VALUES (1, 'Dr. Lindsey Welch II', 0, 1918, NULL),
 --
 DROP TABLE IF EXISTS `book_authors`;
 CREATE TABLE `book_authors` (
-    `book_id` bigint(20) NOT NULL,
-    `author_id` bigint(20) NOT NULL,
+    `book_id` bigint NOT NULL,
+    `author_id` bigint NOT NULL,
     PRIMARY KEY (`book_id`, `author_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 INSERT INTO `book_authors`
@@ -147,7 +147,7 @@ VALUES (1, 11),
 --
 DROP TABLE IF EXISTS `books`;
 CREATE TABLE `books` (
-    `id` bigint(20) AUTO_RANDOM,
+    `id` bigint AUTO_RANDOM,
     `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
     `type` enum(
         'Magazine',
@@ -162,7 +162,7 @@ CREATE TABLE `books` (
         'Sports'
     ) COLLATE utf8mb4_unicode_ci NOT NULL,
     `published_at` datetime NOT NULL,
-    `stock` int(11) DEFAULT '0',
+    `stock` int DEFAULT '0',
     `price` decimal(15, 2) DEFAULT '0.0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -972,10 +972,10 @@ VALUES (
 --
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
-    `id` bigint(20) AUTO_RANDOM,
-    `book_id` bigint(20) NOT NULL,
-    `user_id` bigint(20) NOT NULL,
-    `quality` tinyint(4) NOT NULL,
+    `id` bigint AUTO_RANDOM,
+    `book_id` bigint NOT NULL,
+    `user_id` bigint NOT NULL,
+    `quality` tinyint NOT NULL,
     `ordered_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     KEY `orders_book_id_idx` (`book_id`)
@@ -985,9 +985,9 @@ CREATE TABLE `orders` (
 --
 DROP TABLE IF EXISTS `ratings`;
 CREATE TABLE `ratings` (
-    `book_id` bigint(20) NOT NULL,
-    `user_id` bigint(20) NOT NULL,
-    `score` tinyint(4) NOT NULL,
+    `book_id` bigint NOT NULL,
+    `user_id` bigint NOT NULL,
+    `score` tinyint NOT NULL,
     `rated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY `uniq_book_user_idx` (`book_id`, `user_id`),
     PRIMARY KEY (`book_id`, `user_id`)
@@ -1847,7 +1847,7 @@ VALUES (1, 15, 5, '2024-12-05 00:29:20'),
 --
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-    `id` bigint(20) AUTO_RANDOM,
+    `id` bigint AUTO_RANDOM,
     `balance` decimal(15, 2) DEFAULT '0.0',
     `nickname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
     PRIMARY KEY (`id`),
