@@ -1,0 +1,8 @@
+mysql-host=<HOST_MONITOR1_PRIVATE_IP>
+mysql-port=6000
+mysql-user=root
+mysql-password=
+mysql-db=sbtest
+time=1800
+threads=14
+report-interval=5
