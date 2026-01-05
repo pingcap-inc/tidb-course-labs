@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 class ProductsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List the products for management.
      */
     public function index()
     {
@@ -27,7 +27,8 @@ class ProductsController extends Controller
 
         // Get the products of this page.
         $ProductPaginate = Product::OrderBy('created_at', 'desc')
-            ->where('name', '!=', '')
+            ->where('status', '!=', 'D')    // The product can not be deleted.
+            ->where('name', '!=', '')       // The name of the book can not be blank.
             ->paginate($row_per_page);
 
         // Set the title and data for view.
@@ -41,7 +42,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * List the products.
+     * List the products for sell.
      */
     public function listProducts()
     {
@@ -51,7 +52,8 @@ class ProductsController extends Controller
 
         // Get the products of this page.
         $ProductPaginate = Product::OrderBy('updated_at', 'desc')
-            ->where('status', 'S')      // for selling
+            ->where('status', 'S')      // for selling.
+            ->where('name', '!=', '')   // The name of the book can not be blank.
             ->paginate($row_per_page);
 
         // Set the title and data for view.
@@ -187,7 +189,11 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         //
-        $product->delete();
+        //$product->delete();
+        // If the value of 'status' is 'D', the book will be deleted from the inventory.
+        $product->status = 'D';
+
+        $product->save();
 
         return redirect('/products/manage');
     }
@@ -201,6 +207,7 @@ class ProductsController extends Controller
             //Validate
             $validated = $request->validate(rules: [
                 'buy_count' => 'required|integer|min:1',
+                'pay_with' => 'integer|min:1',
             ]);
         } catch(ValidationException $e) {
 
@@ -223,6 +230,9 @@ class ProductsController extends Controller
             // Purchase Quantity
             $buy_count = $validated['buy_count'];
 
+            // Pay type
+            $pay_type = $validated['pay_with'];
+
             // Remaining Quantity After Purchase
             $remain_count_after_buy = $product->remain_count - $buy_count;
             if ($remain_count_after_buy < 0) {
@@ -239,10 +249,11 @@ class ProductsController extends Controller
 
             $transaction_data = [
                 'user_id'        => $User->id,
-                'product_id' => $product->id,
+                'product_id'     => $product->id,
                 'price'          => $product->price,
                 'buy_count'      => $buy_count,
                 'total_price'    => $total_price,
+                'pay_type'       => $pay_type,
             ];
 
             // Create Transaction Details

@@ -37,6 +37,7 @@
                         <th>{{ __('UNIT PRICE') }}</th>
                         <th>{{ __('QUANTITY') }}</th>
                         <th>{{ __('ORDER AMOUNT') }}</th>
+                        <th>{{ __('PAY WITH') }}</th>
                         <th>{{ __('ORDER TIME') }}</th>
                     </tr>
                     @foreach($TransactionPaginate as $Transaction)
@@ -49,6 +50,7 @@
                             <td> {{ $Transaction->price }}</td>
                             <td> {{ $Transaction->buy_count }}</td>
                             <td> {{ $Transaction->total_price }}</td>
+                            <td> {{ $Transaction->PayType->type }}</td>
                             <td> {{ $Transaction->created_at }}</td>
                         </tr>
                     @endforeach
@@ -57,8 +59,9 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td>
-                            <a href="/products/" class="btn btn-primary btn-sm">Return</a>
+                            <a href="/products/" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">Return</a>
                         </td>
                     </tr>
                 </table>

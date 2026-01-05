@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
-use APP\Models\User;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
@@ -22,6 +20,7 @@ class TransactionController extends Controller
         ->OrderBy('user_id','desc')
         ->with('Product')
         ->with('User')
+        ->with('PayType')
         ->paginate($row_per_page);
 
         // Set the title and data for view.
@@ -33,30 +32,6 @@ class TransactionController extends Controller
         // Sent the Transactions data to view.
         return view('Transactions.listTransaction', $binding);
 
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function listUserTransactions()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -86,6 +61,7 @@ class TransactionController extends Controller
             ->OrderBy('created_at', 'desc')
             ->with('Product')
             ->with('User')
+            ->with('PayType')
             ->paginate($row_per_page);
 
         // Set the title and data for view.
@@ -96,29 +72,5 @@ class TransactionController extends Controller
 
         // Sent the Transactions data to view.
         return view('Transactions.listUserTransaction', $binding);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
     }
 }

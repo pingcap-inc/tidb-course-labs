@@ -26,6 +26,8 @@ return new class extends Migration
             $table->decimal('total_price', 18, 2);
             // Timestamp.
             $table->timestamps();
+            // Pay type.
+            $table->string('pay_type', 16)->default('1');
 
             // Index
             $table->index(['user_id'], 'user_transaction_idx');

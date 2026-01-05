@@ -78,7 +78,7 @@
                             </td>
                             <td>
                                 <form method="POST" action="/products/{{ $Product->id }}"> @csrf @method('DELETE') <button
-                                        type="submit" onclick="return confirm('Are you sure you want to delete this books?')"
+                                        type="submit" onclick="return confirm('Are you sure you want to delete this book?')"
                                         class="btn btn-ghost btn-xs text-error"> Delete </button>
                                 </form>
                             </td>

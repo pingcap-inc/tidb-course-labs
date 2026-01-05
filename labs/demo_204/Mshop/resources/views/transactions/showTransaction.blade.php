@@ -12,41 +12,47 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
                 <div class="form-container">
-<table class="table">
-    <tr>
-        <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('PRODUCT NAME:') }}</th>
-        <td style="font-weight: bold;">
-            {{ $Transaction->Product->name }}
-        </td>
-    </tr>
-    <tr>
-        <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('PRODUCT PRICE:') }}</th>
-        <td style="font-weight: bold;">
-            {{ $Transaction->price }}
-        </td>
-    </tr>
-    <tr>
-        <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('ORDER QUANTITY:') }}</th>
-        <td style="font-weight: bold;">
-            {{ $Transaction->buy_count }}
-        </td>
-    </tr>
-    <tr>
-        <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('ORDER AMOUNT:') }}</th>
-        <td style="font-weight: bold;">
-            {{ $Transaction->total_price }}
-        </td>
-    </tr>
-    <tr>
-        <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('OPERATION:') }}</th>
-        <td>
-            <a href="/transactions/{{ $Transaction->user_id }}/user" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">All orders</a>
-        </td>
-        <td>
-            <a href="/products/" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">Return</a>
-        </td>
-    </tr>
-</table>
+                    <table class="table">
+                        <tr>
+                            <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('PRODUCT NAME:') }}</th>
+                            <td style="font-weight: bold;">
+                                {{ $Transaction->Product->name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('PRODUCT PRICE:') }}</th>
+                            <td style="font-weight: bold;">
+                                {{ $Transaction->price }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('ORDER QUANTITY:') }}</th>
+                            <td style="font-weight: bold;">
+                                {{ $Transaction->buy_count }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('ORDER AMOUNT:') }}</th>
+                            <td style="font-weight: bold;">
+                                {{ $Transaction->total_price }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('PAY WITH:') }}</th>
+                            <td style="font-weight: bold;">
+                                {{ $Transaction->PayType->type }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style=" color:rgba(125, 114, 114, 0.854) ">{{ __('OPERATION:') }}</th>
+                            <td>
+                                <a href="/transactions/{{ $Transaction->user_id }}/user" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">All orders</a>
+                            </td>
+                            <td>
+                                <a href="/products/" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">Return</a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

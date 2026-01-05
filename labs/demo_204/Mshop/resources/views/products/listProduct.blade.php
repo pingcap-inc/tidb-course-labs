@@ -71,7 +71,7 @@
                             <td> {{ $Product->price }}</td>
                             <td> {{ $Product->remain_count }}</td>
                             <td>
-                                <a href="/products/{{ $Product->id }}" class="btn btn-primary btn-sm">View</a>
+                                <a href="/products/{{ $Product->id }}" class="btn btn-primary btn-sm"  onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">View</a>
                             </td>
                         </tr>
                     @endforeach

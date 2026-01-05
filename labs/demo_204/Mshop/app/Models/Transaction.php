@@ -18,6 +18,7 @@ class Transaction extends Model
         "price",
         "buy_count",
         "total_price",
+        "pay_type",
     ];
     public function Product()
     {
@@ -26,5 +27,9 @@ class Transaction extends Model
     public function User()
     {
         return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
+    public function PayType()
+    {
+        return $this->hasOne('App\Models\PayType', 'id', 'pay_type');
     }
 }
