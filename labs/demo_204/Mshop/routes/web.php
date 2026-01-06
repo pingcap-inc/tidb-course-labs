@@ -10,7 +10,7 @@ use Intervention\Image\Facades\Image;
 //});
 
 Route::get('/', function() {
-    $img = Image::make('defaultphoto.png')->resize(359, 522);
+    $img = Image::make('assets/images/defaultphoto.png')->resize(359, 522);
     return $img->response('png');
 });
 
