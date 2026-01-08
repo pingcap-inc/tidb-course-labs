@@ -17,7 +17,12 @@ class Product extends Model
         "name",
         "introduction",
         "photo",
-        'price',
-        'remain_count',
+        "price",
+        "remain_count",
+        "product_type",
     ];
+    public function ProductType()
+    {
+        return $this->hasOne('App\Models\ProductType', 'id', 'product_type');
+    }
 }

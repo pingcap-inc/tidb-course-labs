@@ -3,16 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionController;
-use Intervention\Image\Facades\Image;
-
-//Route::get('/', function () {
-//    return view('home');
-//});
-
-Route::get('/', function() {
-    $img = Image::make('assets/images/defaultphoto.png')->resize(359, 522);
-    return $img->response('png');
-});
 
 // Product
 Route::group(['prefix' => 'products'], function(){

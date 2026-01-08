@@ -3,7 +3,7 @@
        Welcome
    </x-slot:title>
    <div class="max-w-2xl mx-auto">
-       @forelse (($logs ?? []) as $log)
+       @forelse ($logs as $log)
            <div class="card bg-base-100 shadow mt-8">
                <div class="card-body">
                    <div>

@@ -29,9 +29,19 @@ class TransactionController extends Controller
             'TransactionPaginate'=> $TransactionPaginate,
         ];
 
-        // Sent the Transactions data to view.
-        return view('Transactions.listTransaction', $binding);
-
+        /**
+         * If $hasSave is true, it will use the view 'Transactions.listTransactionSave.blade.php' with 'save' column in the its table to list the transactions.
+         * If $hasSave is false, it will use the view 'Transactions.listTransaction.blade.php' without 'save' column in the its table to list the transactions.
+         */
+        $hasSave = false;
+        if($hasSave) {
+            // Sent the Transactions data to view with the column ‘SAVE’.
+            return view('Transactions.listTransactionSave', $binding);
+        }
+        else {
+            // Sent the Transactions data to view without the column ‘SAVE’.
+            return view('Transactions.listTransaction', $binding);
+        }
     }
 
     /**

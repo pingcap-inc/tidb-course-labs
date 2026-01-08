@@ -9,7 +9,7 @@
     </div>
 
     <x-slot:title>
-        Transaction List
+        Transactions List
     </x-slot:title>
 
     <div class="container">
@@ -23,7 +23,9 @@
                 <table class="table" style="text-align: center;">
                     <tr class=" table_head ">
                         <th>{{ __('PRODUCT NAME') }}</th>
+                        <th>{{ __('CUSTOMER NAME') }}</th>
                         <th>{{ __('UNIT PRICE') }}</th>
+                        <th>{{ __('SAVE') }}</th>
                         <th>{{ __('QUANTITY') }}</th>
                         <th>{{ __('ORDER AMOUNT') }}</th>
                         <th>{{ __('PAY WITH') }}</th>
@@ -32,29 +34,35 @@
                     @foreach($TransactionPaginate as $Transaction)
                         <tr>
                             <td class=" table_row ">
-                                <a href="/products/{{ $Transaction->Product->id }}">
-                                    {{ $Transaction->Product->name }}
-                                </a>
+                                @php
+                                // Truncation to 26 characters, any excess will be displayed...
+                                $displayName = strlen($Transaction->Product->name) > 24
+                                    ? substr($Transaction->Product->name, 0, 26) . '...'
+                                    : $Transaction->Product->name;
+                                @endphp
+                                {{ $displayName }}
                             </td>
+                            <td> {{ $Transaction->User->name }} </td>
                             <td> {{ $Transaction->price }}</td>
+                            <td>
+                                @php
+                                // Format the ‘SAVE’ column: Add the ‘%‘ symbol to handle decimals.
+                                $saveValue = floatval($Transaction->save);
+                                if (round($saveValue) == $saveValue) {
+                                    // If the decimal part is all ‘0’, display the integer.
+                                    echo intval($saveValue) . '%';
+                                } else {
+                                    // Display decimals
+                                    echo number_format($saveValue, 2) . '%';
+                                }
+                                @endphp
+                            </td>
                             <td> {{ $Transaction->buy_count }}</td>
                             <td> {{ $Transaction->total_price }}</td>
                             <td> {{ $Transaction->PayType->type }}</td>
                             <td> {{ $Transaction->created_at }}</td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <a href="/products/" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
-                                Return
-                            </a>
-                        </td>
-                    </tr>
                 </table>
 
                 {{-- Page navigation button --}}
@@ -84,7 +92,7 @@
         background-color: #5c4a31ce;
         color:white;
         font-weight: bold;
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 
     .table_row {

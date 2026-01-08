@@ -8,23 +8,12 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('loadingModal');
-            modal.style.display = 'flex';
-
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 3000);
-        });
-    </script>
-
     <x-slot:title>
         Book Management
     </x-slot:title>
 
     <div class="container">
-        <h1 style="font-weight: bold; font-size: 1.8em;">{{ $title }}</h1>
+        <h1 class=" subtitle ">{{ $title }}</h1>
 
         {{-- Error message template component --}}
         @include('components.validationErrorMessage')
@@ -32,10 +21,11 @@
         <div class="row">
             <div class="col-md-12">
                 <table class="table" style="text-align: center;">
-                    <tr style=" background-color: #329f75; color:white; font-weight: bold; font-size: 1.5em;">
+                    <tr class=" table_head ">
                         <th>{{  __('BOOK ID')}}</th>
                         <th>{{ __('NAME') }}</th>
                         <th>{{ __('COVER')}}</th>
+                        <th>{{ __('CATEGORY')}}</th>
                         <th>{{ __('STATUS') }}</th>
                         <th>{{ __('PRICE') }}</th>
                         <th>{{ __('REMAIN') }}</th>
@@ -45,20 +35,29 @@
                     @foreach($ProductPaginate as $Product)
                         <tr>
                             <td> {{ $Product->id }}</td>
-                            <td style="font-weight: bold;">
+                            <td class=" table_row ">
                                 @php
                                 // Truncate to 26 characters, any excess will be displayed as ‘...’
-                                $displayName = strlen($Product->name) > 24
+                                $displayName = strlen($Product->name) > 26
                                     ? substr($Product->name, 0, 26) . '...'
                                     : $Product->name;
                                 @endphp
                                 {{ $displayName }}
                             </td>
-                            <td style="padding: 10px; text-align: center; vertical-align: middle;">
-                                <a href="/products/{{ $Product->id }}" style="display: inline-block;">
+                            <td class=" table_pic_row ">
+                                <a href="/products/{{ $Product->id }}" class=" pic_href ">
                                     <img src="{{ $Product->photo }}"
-                                         style="width: 90px; height: 130px; object-fit: cover; border-radius: 4px; margin: 0 auto; display: block;" />
+                                         class=" pic_content " />
                                 </a>
+                            </td>
+                            <td>
+                                @php
+                                // Truncate to 12 characters, any excess will be displayed as ‘...’
+                                $displayCategory = strlen($Product->ProductType->type) > 12
+                                    ? substr($Product->ProductType->type, 0, 12) . '...'
+                                    : $Product->ProductType->type;
+                                @endphp
+                                {{ $displayCategory }}
                             </td>
                             <td>
                                 @if($Product->status == 'C')
@@ -91,5 +90,53 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('loadingModal');
+            modal.style.display = 'flex';
+
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+
+    <style>
+    .subtitle {
+        font-weight: bold;
+        font-size: 1.8em;
+    }
+
+    .table_head {
+        background-color: #329f75;
+        color:white;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .table_row {
+        font-weight: bold;
+    }
+
+    .table_pic_row {
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .pic_href {
+        display: inline-block;
+    }
+
+    .pic_content {
+        width: 90px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin: 0 auto;
+        display: block;
+    }
+    </style>
 
 </x-layout>

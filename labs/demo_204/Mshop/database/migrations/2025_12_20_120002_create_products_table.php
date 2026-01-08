@@ -17,6 +17,7 @@ return new class extends Migration
             // Used to indicate the status of products; only products that have been listed can be seen by consumers.
             //  - C（Create）: Under Construction
             //  - S（Sell）: Available for Sale
+            //  - D (Deleted) : The book is deleted
             $table->string('status', 1)->default('C');
             // Product Name
             $table->string('name', 80)->nullable()->index('idx_name_product');
@@ -30,6 +31,8 @@ return new class extends Migration
             $table->integer('remain_count')->default(0);
             // Timestamp
             $table->timestamps();
+            // Product type.
+            $table->integer('product_type')->default(1);
         });
     }
 

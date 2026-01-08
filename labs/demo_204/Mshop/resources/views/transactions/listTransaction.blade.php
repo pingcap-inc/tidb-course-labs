@@ -8,23 +8,12 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('loadingModal');
-            modal.style.display = 'flex';
-
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 4000);
-        });
-    </script>
-
     <x-slot:title>
         Transactions List
     </x-slot:title>
 
     <div class="container">
-        <h1 style="font-weight: bold; font-size: 1.8em;">{{ $title }}</h1>
+        <h1 class=" subtitle ">{{ $title }}</h1>
 
         {{-- Error message template component --}}
         @include('components.validationErrorMessage')
@@ -32,7 +21,7 @@
         <div class="row">
             <div class="col-md-12">
                 <table class="table" style="text-align: center;">
-                    <tr style=" background-color: #5c4a31ce; color:white; font-weight: bold; font-size: 1.5em;">
+                    <tr class=" table_head ">
                         <th>{{ __('PRODUCT NAME') }}</th>
                         <th>{{ __('CUSTOMER NAME') }}</th>
                         <th>{{ __('UNIT PRICE') }}</th>
@@ -43,7 +32,7 @@
                     </tr>
                     @foreach($TransactionPaginate as $Transaction)
                         <tr>
-                            <td style="font-weight: bold; font-size: 1.2em;">
+                            <td class=" table_row ">
                                 @php
                                 // Truncation to 26 characters, any excess will be displayed...
                                 $displayName = strlen($Transaction->Product->name) > 24
@@ -67,5 +56,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('loadingModal');
+            modal.style.display = 'flex';
+
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+
+    <style>
+    .subtitle {
+        font-weight: bold;
+        font-size: 1.8em;
+    }
+
+    .table_head {
+        background-color: #5c4a31ce;
+        color:white;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .table_row {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    </style>
 
 </x-layout>

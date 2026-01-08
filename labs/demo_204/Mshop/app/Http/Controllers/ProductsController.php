@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Transaction;
+use App\Models\PayType;
+use App\Models\ProductType;
 
 use Illuminate\Http\Request;
 
@@ -54,7 +56,7 @@ class ProductsController extends Controller
         $ProductPaginate = Product::OrderBy('updated_at', 'desc')
             ->where('status', 'S')      // for selling.
             ->where('name', '!=', '')   // The name of the book can not be blank.
-            ->paginate($row_per_page);
+            ->paginate($row_per_page);  // Pagination.
 
         // Set the title and data for view.
         $binding = [
@@ -103,9 +105,11 @@ class ProductsController extends Controller
     public function show(Product $product)
     {
         //
+        $payTypes = PayType::all();  // Get all pay types.
         $binding = [
             'title' => 'Product Details',
-            'Product'=> $product,
+            'Product' => $product,
+            'PayTypes' => $payTypes,
         ];
         return view('products.ShowProduct', $binding);
     }
@@ -118,6 +122,8 @@ class ProductsController extends Controller
         // Get product information.
         $Product = Product::findOrFail($product_id);
 
+        $ProductTypes = ProductType::all(); // Get all product types.
+
         if (!is_null($Product->photo)) {
             // Set the photo address of product's photo
             $Product->photo = url($Product->photo);
@@ -126,6 +132,7 @@ class ProductsController extends Controller
         $binding = [
             'title' => 'Edit Product',
             'Product'=> $Product,
+            'ProductTypes' => $ProductTypes,
         ];
         return view('products.editProduct', $binding);
     }
@@ -144,6 +151,7 @@ class ProductsController extends Controller
             'price' => 'required|numeric|min:0.1|max:10000|regex:/^\d+(\.\d{1,2})?$/',
             'remain_count' => 'required|integer|min:0',
             'photo' => 'image',
+            'product_type' => 'required|min:1',
         ]);
 
         if (isset($validated['photo'])){
@@ -207,7 +215,7 @@ class ProductsController extends Controller
             //Validate
             $validated = $request->validate(rules: [
                 'buy_count' => 'required|integer|min:1',
-                'pay_with' => 'integer|min:1',
+                'pay_with' => 'required|integer|min:1',
             ]);
         } catch(ValidationException $e) {
 
@@ -216,6 +224,26 @@ class ProductsController extends Controller
                 ->withInput();
         }
 
+        /**
+         * If $OnlineSchemaChange is true, execute function $this->executeTransactionWithRetry(...) to prevent from the
+         * error 'Error 8028: Information schema is changed during the execution of the statement' by retry for purchase transaction.
+         * If $OnlineSchemaChange is true, exectue function $this->executeTransaction(...) for purchase transaction without retry.
+         */
+        $OnlineSchemaChange = false;
+
+        if($OnlineSchemaChange) {
+
+            //Execute the logic of purchase transaction.
+            return $this->executeTransactionWithRetry($request, $product, $validated);
+        } else {
+            //Use recursive functions to handle retry logic of purchase transaction.
+            return $this->executeTransaction($request, $product, $validated);
+
+        }
+    }
+
+    private function executeTransaction($request, $product, $validated, $retryCount = 0)
+    {
         try {
             // Retrieve Login Member Information
             $user_id = 1; //Hard code
@@ -276,6 +304,95 @@ class ProductsController extends Controller
 
             // Rollback Original Transaction Status
             DB::rollBack();
+
+            // Return Error Message
+            $error_message = [
+                'msg' => [
+                    $exception->getMessage(),
+                ],
+            ];
+            return redirect()
+                ->back()
+                ->withErrors($error_message)
+                ->withInput();
+        }
+    }
+
+    private function executeTransactionWithRetry($request, $product, $validated, $retryCount = 0)
+    {
+        try {
+            // Retrieve Login Member Information
+            $user_id = 1; //Hard code
+            $User = User::findOrFail($user_id);
+
+            // Transaction Start
+            DB::beginTransaction();
+
+            // Debug
+            Log::info("Trx begin!");
+
+            // Retrieve Product Information
+            $product = Product::findOrFail($product->id);
+
+            // Purchase Quantity
+            $buy_count = $validated['buy_count'];
+
+            // Pay type
+            $pay_type = $validated['pay_with'];
+
+            // Remaining Quantity After Purchase
+            $remain_count_after_buy = $product->remain_count - $buy_count;
+            if ($remain_count_after_buy < 0) {
+                // Remaining quantity after purchase is less than 0, insufficient to sell to the user
+                throw new \Exception('Insufficient quantity of goods, unable to purchase.');
+            }
+
+            // Record Remaining Quantity After Purchase
+            $product->remain_count = $remain_count_after_buy;
+            $product->save();
+
+            // Total Amount: Total Purchase Quantity * Product Price
+            $total_price = $buy_count * $product->price;
+
+            $transaction_data = [
+                'user_id'        => $User->id,
+                'product_id'     => $product->id,
+                'price'          => $product->price,
+                'buy_count'      => $buy_count,
+                'total_price'    => $total_price,
+                'pay_type'       => $pay_type,
+            ];
+
+            // Create Transaction Details
+            $transaction = Transaction::create($transaction_data);
+
+            // Transaction End
+            DB::commit();
+
+            // Return Purchase Success Message
+            $message = [
+                'msg' => [
+                    ' Purchase Successfully！',
+                ],
+            ];
+            return redirect()
+                ->to('/transactions/' . $transaction->id)
+                ->withErrors($message);
+
+        } catch (\Exception $exception) {
+            // Rollback Original Transaction Status
+            DB::rollBack();
+            // Debug
+            Log::info($exception->getMessage());
+            // Check if it is a specific error and retry (maximum 3 retries).
+            if (strpos($exception->getMessage(), 'General error: 8028 Information schema is changed during the execution of the statement') !== false
+                && $retryCount < 3) {
+                // Debug
+                Log::info($exception->getMessage());
+                // Try again after a short wait.
+                usleep(100000); // 100ms
+                return $this->executeTransactionWithRetry($request, $product, $validated, $retryCount + 1);
+            }
 
             // Return Error Message
             $error_message = [

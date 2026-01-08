@@ -8,23 +8,12 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('loadingModal');
-            modal.style.display = 'flex';
-
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 3000);
-        });
-    </script>
-
     <x-slot:title>
         Books List
     </x-slot:title>
 
     <div class="container">
-        <h1 style="font-weight: bold; font-size: 1.8em;">{{ $title }}</h1>
+        <h1 class="subtitle">{{ $title }}</h1>
 
         {{-- Error message template component --}}
         @include('components.validationErrorMessage')
@@ -32,17 +21,17 @@
         <div class="row">
             <div class="col-md-12">
                 <table class="table" style="text-align: center;">
-                    <tr style=" background-color: #288bc9; color:white; font-weight: bold; font-size: 1.5em;">
+                    <tr class="table_head">
                         <th>{{ __('NAME') }}</th>
                         <th>{{ __('COVER')}}</th>
-                        <th>{{ __('STATUS') }}</th>
+                        <th>{{ __('CATAGORY') }}</th>
                         <th>{{ __('PRICE') }}</th>
                         <th>{{ __('REMAIN') }}</th>
                         <th>{{ __('DETAILS') }}</th>
                     </tr>
                     @foreach($ProductPaginate as $Product)
                         <tr>
-                            <td style="font-weight: bold; font-size: 1.2em;">
+                            <td class="table_row">
                                 @php
                                 // Truncate to 26 characters, any excess will be displayed as ‘...’
                                 $displayName = strlen($Product->name) > 24
@@ -51,27 +40,18 @@
                                 @endphp
                                 {{ $displayName }}
                             </td>
-                            <td style="padding: 10px; text-align: center; vertical-align: middle;">
-                                <a href="/products/{{ $Product->id }}" style="display: inline-block;">
-                                    <img src="{{ $Product->photo }}"
-                                         style="width: 90px; height: 130px; object-fit: cover; border-radius: 4px; margin: 0 auto; display: block;" />
+                            <td class="table_pic_row">
+                                <a href="/products/{{ $Product->id }}" class="pic_href">
+                                    <img src="{{ $Product->photo }}" class="pic_content" />
                                 </a>
                             </td>
-                            <td>
-                                @if($Product->status == 'C')
-                                    <span class="label label-default">
-                                        {{ __('COMING SOON')  }}
-                                    </span>
-                                @else
-                                    <span class="label label-success">
-                                        {{ __('SELL')  }}
-                                    </span>
-                                @endif
-                            </td>
+                            <td> {{ $Product->ProductType->type }}</td>
                             <td> {{ $Product->price }}</td>
                             <td> {{ $Product->remain_count }}</td>
                             <td>
-                                <a href="/products/{{ $Product->id }}" class="btn btn-primary btn-sm"  onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">View</a>
+                                <a href="/products/{{ $Product->id }}" class="btn btn-primary btn-sm"  onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
+                                    View
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -82,5 +62,54 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('loadingModal');
+            modal.style.display = 'flex';
+
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+
+    <style>
+    .subtitle {
+        font-weight: bold;
+        font-size: 1.8em;
+    }
+
+    .table_head {
+        background-color: #288bc9;
+        color:white;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .table_row {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .table_pic_row {
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .pic_href {
+        display: inline-block;
+    }
+
+    .pic_content {
+        width: 90px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin: 0 auto;
+        display: block;
+    }
+    </style>
 
 </x-layout>

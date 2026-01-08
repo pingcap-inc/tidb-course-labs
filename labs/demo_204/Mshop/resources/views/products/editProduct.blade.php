@@ -18,7 +18,7 @@
                         {{-- Product Name --}}
 
                                 <table class="table">
-                                        <tr>
+                                    <tr>
                                         <th>{{ __('STATUS:') }}</th>
                                         <td>
                                             <select class="form-control w-25" name="status" id="status">
@@ -31,7 +31,19 @@
                                             </select>
                                         </td>
                                     </tr>
-                                        <tr>
+                                    <tr>
+                                        <th>{{ __('CATEGORY:') }}</th>
+                                        <td>
+<select class="form-control w-25" name="product_type" id="product_type">
+    @foreach($ProductTypes as $ProductType)
+        <option value="{{ $ProductType->id }}" @selected(old('product_type', $Product->product_type) == $ProductType->id)>
+            {{ $ProductType->type }}
+        </option>
+        @endforeach
+</select>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>{{ __('NAME:') }}</th>
                                         <td>
                                                 <input type="text" class="form-control w-50" id="name" name="name"
@@ -105,12 +117,6 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .form-label {
-        padding-top: 0.375rem;
-        padding-bottom: 0.375rem;
-        margin-bottom: 0;
-    }
-
     .row {
         min-height: 80px;
         align-items: center;
@@ -149,22 +155,6 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         display: block; /* Mask layer and blur effect */
     }
-
-    /* Ensure the image occupies a single line or adjust as needed */
-    #loading-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(5px); /* Background blur */
-        z-index: 9999;
-        display: none; /* Default hidden */
-        justify-content: center;
-        align-items: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #333;
-    }
-
     </style>
 
     <script>
