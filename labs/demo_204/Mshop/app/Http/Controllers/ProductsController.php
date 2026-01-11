@@ -65,7 +65,7 @@ class ProductsController extends Controller
         ];
 
         // Sent the products data to view.
-        return view('products.ListProduct', $binding);
+        return view('products.listProduct', $binding);
     }
 
     /**
@@ -111,7 +111,7 @@ class ProductsController extends Controller
             'Product' => $product,
             'PayTypes' => $payTypes,
         ];
-        return view('products.ShowProduct', $binding);
+        return view('products.showProduct', $binding);
     }
 
     /**
