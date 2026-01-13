@@ -36,11 +36,11 @@ class TransactionController extends Controller
         $hasSave = false;
         if($hasSave) {
             // Sent the Transactions data to view with the column ‘SAVE’.
-            return view('Transactions.listTransactionSave', $binding);
+            return view('transactions.listTransactionSave', $binding);
         }
         else {
             // Sent the Transactions data to view without the column ‘SAVE’.
-            return view('Transactions.listTransaction', $binding);
+            return view('transactions.listTransaction', $binding);
         }
     }
 
@@ -55,7 +55,7 @@ class TransactionController extends Controller
             'title' => 'Order Details',
             'Transaction'=> $transaction,
         ];
-        return view('transactions.ShowTransaction', $binding);
+        return view('transactions.showTransaction', $binding);
     }
 
     /**
@@ -81,6 +81,6 @@ class TransactionController extends Controller
         ];
 
         // Sent the Transactions data to view.
-        return view('Transactions.listUserTransaction', $binding);
+        return view('transactions.listUserTransaction', $binding);
     }
 }

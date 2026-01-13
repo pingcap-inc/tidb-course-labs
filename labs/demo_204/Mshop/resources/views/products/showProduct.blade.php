@@ -20,7 +20,7 @@
                             </td>
                         </tr>
                     </table>
-                    <form action="/vscode/proxy/8000/products/{{ $Product->id }}/buy"
+                    <form action="/products/{{ $Product->id }}/buy"
                             method="post" class="d-flex align-items-center gap-2"
                             onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = 'Wait...';">
                         @csrf
@@ -74,7 +74,7 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <a href="{{ request()->getBaseUrl() }}/vscode/proxy/8000/products" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">Cancel</a>
+                                    <a href="/products" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">Cancel</a>
                                 </td>
                             </tr>
                         </table>

@@ -9,7 +9,7 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
-                <form id="main-form" action="/vscode/proxy/8000/products/{{ $Product->id }}" method="post" enctype="multipart/form-data">
+                <form id="main-form" action="/products/{{ $Product->id }}" method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
 

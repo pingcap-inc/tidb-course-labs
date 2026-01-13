@@ -41,7 +41,7 @@
                                 {{ $displayName }}
                             </td>
                             <td class="table_pic_row">
-                                <a href="products/{{ $Product->id }}" class="pic_href">
+                                <a href="/products/{{ $Product->id }}" class="pic_href">
                                     <img src="{{ $Product->photo }}" class="pic_content" />
                                 </a>
                             </td>
@@ -49,7 +49,7 @@
                             <td> {{ $Product->price }}</td>
                             <td> {{ $Product->remain_count }}</td>
                             <td>
-                                <a href="products/{{ $Product->id }}" class="btn btn-primary btn-sm"  onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
+                                <a href="/products/{{ $Product->id }}" class="btn btn-primary btn-sm"  onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
                                     View
                                 </a>
                             </td>
