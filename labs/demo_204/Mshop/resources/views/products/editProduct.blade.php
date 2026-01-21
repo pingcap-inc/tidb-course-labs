@@ -1,186 +1,136 @@
 <x-layout>
 
     <x-slot:title>
-        Products Edit
+        {{ __('shop.product.Book-update') }}
     </x-slot:title>
 
-    <div class="container">
+    <div class="container mx-auto px-4 py-8">
         @include('components.validationErrorMessage')
 
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
+        <div class="flex justify-center">
+            <div class="w-full max-w-[800px]">
+
                 <form id="main-form" action="/products/{{ $Product->id }}" method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
 
-                    <div class="form-container">
-                        {{-- Status Selection --}}
-                        {{-- Product Name --}}
+                    <div class="bg-[#f8f9fa] p-8 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
 
-                                <table class="table">
-                                    <tr>
-                                        <th>{{ __('STATUS:') }}</th>
-                                        <td>
-                                            <select class="form-control w-25" name="status" id="status">
-                                                <option value="C" @selected(old('status', $Product->status) == 'C')>
-                                                    {{ __('CREATE') }}
-                                                </option>
-                                                <option value="S" @selected(old('status', $Product->status) == 'S')>
-                                                    {{ __('SELL') }}
-                                                </option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('CATEGORY:') }}</th>
-                                        <td>
-<select class="form-control w-25" name="product_type" id="product_type">
-    @foreach($ProductTypes as $ProductType)
-        <option value="{{ $ProductType->id }}" @selected(old('product_type', $Product->product_type) == $ProductType->id)>
-            {{ $ProductType->type }}
-        </option>
-        @endforeach
-</select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('NAME:') }}</th>
-                                        <td>
-                                                <input type="text" class="form-control w-50" id="name" name="name"
-                                                    placeholder="{{ __('Name of book') }}"
-                                                    value="{{ old('name', $Product->name) }}">
-                                        </td>
-                                    </tr>
-                                        <tr>
-                                        <th>{{ __('BURB:') }}</th>
-                                        <td>
-                                            <textarea class="form-control"
-                                                id="introduction"
-                                                name="introduction"
-                                                rows="2"
-                                                maxlength="200"
-                                                placeholder="{{ __('Burb of book') }}">{{ old('introduction', $Product->introduction) }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('PRICE:') }}</th>
-                                        <td>
-                                            <input type="text" class="form-control w-25" id="price" name="price"
-                                                placeholder="{{ __('Price of book') }}"
-                                                value="{{ old('price', $Product->price) }}">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('QUANTITY:') }}</th>
-                                        <td>
-                                            <input type="text" class="form-control w-25" id="remain_count" name="remain_count"
-                                                placeholder="{{ __('Quantity of books') }}"
-                                                value="{{ old('remain_count', $Product->remain_count) }}">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('COVER:') }}</th>
-                                        <td>
-                                            <input type="file" class="form-control w-50" id="photo" name="photo"
-                                                accept="image/*"
-                                                onchange="previewImage(this)">
+                        <table class="w-full text-left border-collapse">
+                            <tbody>
+                                {{-- STATUS --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-1 pr-1 font-bold w-1/4 align-middle">{{ __('shop.product.Edit-fields.STATUS') }}</th>
+                                    <td class="py-1 align-middle">
+                                        <select class="w-1/4 border border-gray-300 rounded px-1 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" name="status" id="status">
+                                            <option value="C" @selected(old('status', $Product->status) == 'C')>{{ __('shop.product.Management-fields.Status-item.create') }}</option>
+                                            <option value="S" @selected(old('status', $Product->status) == 'S')>{{ __('shop.product.Management-fields.Status-item.sell') }}</option>
+                                        </select>
+                                    </td>
+                                </tr>
 
-                                            @if($Product->photo)
-                                                <img src="{{ $Product->photo }}" id="preview-img" alt="Preview">
-                                            @else
-                                                <img src="" id="preview-img" style="display:none;" alt="Preview">
-                                            @endif
-                                        </td>
-                                    </tr>
-                                </table>
-                        {{-- Submit Button, left-aligned with label --}}
-                        <div class="row">
-                            <div class="col-sm-3"></div> {{-- Empty columns remain aligned --}}
-                            <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary px-4">{{ __('UPDATE') }}</button>
+                                {{-- CATEGORY --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-1 pr-4 font-bold align-middle">{{ __('shop.product.Edit-fields.CATAGORY') }}</th>
+                                    <td class="py-1 align-middle">
+                                        <select class="w-1/2 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" name="product_type" id="product_type">
+                                            @foreach($ProductTypes as $ProductType)
+                                                <option value="{{ $ProductType->id }}" @selected(old('product_type', $Product->product_type) == $ProductType->id)>
+                                                    {{ $ProductType->type }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                {{-- NAME --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-1 pr-4 font-bold align-middle">{{ __('shop.product.Edit-fields.NAME') }}</th>
+                                    <td class="py-1 align-middle">
+                                        <input type="text" class="w-1/2 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                               id="name" name="name"
+                                               placeholder="{{ __('Name of book') }}"
+                                               value="{{ old('name', $Product->name) }}">
+                                    </td>
+                                </tr>
+
+                                {{-- BLURB --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-4 pr-4 font-bold align-middle">{{ __('shop.product.Edit-fields.BLURB') }}</th>
+                                    <td class="py-4 align-middle">
+                                        <textarea class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                  id="introduction" name="introduction" rows="2" maxlength="200"
+                                                  placeholder="{{ __('Burb of book') }}">{{ old('introduction', $Product->introduction) }}</textarea>
+                                    </td>
+                                </tr>
+
+                                {{-- PRICE --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-1 pr-4 font-bold align-middle">{{ __('shop.product.Edit-fields.PRICE') }}</th>
+                                    <td class="py-1 align-middle">
+                                        <input type="text" class="w-1/4 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                               id="price" name="price"
+                                               placeholder="{{ __('Price of book') }}"
+                                               value="{{ old('price', $Product->price) }}">
+                                    </td>
+                                </tr>
+
+                                {{-- QUANTITY --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-1 pr-4 font-bold align-middle">{{ __('shop.product.Edit-fields.QUANTITY') }}</th>
+                                    <td class="py-1 align-middle">
+                                        <input type="text" class="w-1/4 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                               id="remain_count" name="remain_count"
+                                               placeholder="{{ __('Quantity of books') }}"
+                                               value="{{ old('remain_count', $Product->remain_count) }}">
+                                    </td>
+                                </tr>
+
+                                {{-- COVER --}}
+                                <tr>
+                                    <th class="py-1 pr-4 font-bold align-middle">{{ __('shop.product.Edit-fields.COVER') }}</th>
+                                    <td class="py-1 align-middle">
+                                        <input type="file" class="w-1/2 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-1 file:px-2 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                               id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
+
+                                        <img src="{{ $Product->photo ?: '' }}"
+                                             id="preview-img"
+                                             alt="Preview"
+                                             class="max-w-[150px] mt-3 rounded shadow-sm {{ $Product->photo ? 'block' : 'hidden' }}">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="flex mt-6">
+                            <div class="w-1/4"></div>
+                            <div class="w-3/4">
+                                <button type="submit" class="bg-black text-white font-medium py-2 px-6 rounded min-w-[120px] hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                    {{ __('shop.Buttons.UPDATE') }}
+                                </button>
                             </div>
                         </div>
+
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <style>
-
-    .form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .row {
-        min-height: 80px;
-        align-items: center;
-    }
-
-    /* Ensure labels maintain proper alignment on small screens */
-    @media (max-width: 576px) {
-        .col-sm-3 .form-label {
-            text-align: left !important;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-container {
-            padding: 1rem;
-        }
-    }
-
-    /* For more precise control, add this CSS */
-    .form-control {
-        width: 100%;
-    }
-
-    .btn {
-        min-width: 120px;
-    }
-
-    /* Simple width helper class */
-    .w-50 { width: 50% !important; }
-    .w-25 { width: 25% !important; }
-
-    /* Image preview style */
-    #preview-img {
-        max-width: 150px;
-        margin-top: 10px;
-        border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        display: block; /* Mask layer and blur effect */
-    }
-    </style>
-
     <script>
-        // 1. Real-time image preview function
         function previewImage(input) {
             const preview = document.getElementById('preview-img');
             if (input.files && input.files[0]) {
                 preview.src = URL.createObjectURL(input.files[0]);
-                preview.style.display = 'block';
-
-                // Release memory
-                preview.onload = function() {
-                    URL.revokeObjectURL(preview.src);
-                }
+                preview.classList.remove('hidden');
+                preview.classList.add('block');
+                preview.onload = function() { URL.revokeObjectURL(preview.src); }
             }
         }
 
-        // 2. Pop-up logic for clicking the UPDATE button
         document.getElementById('main-form').addEventListener('submit', function(e) {
-            // Get the submit button
             const btn = this.querySelector('button[type="submit"]');
-
-            // Prevent duplicate submissions if the button is disabled
             if (btn.disabled) { e.preventDefault(); return; }
-
-            // Disable the button and change the text (to prevent repeated clicks)
             btn.disabled = true;
             btn.innerText = '{{ __("Please wait...") }}';
         });

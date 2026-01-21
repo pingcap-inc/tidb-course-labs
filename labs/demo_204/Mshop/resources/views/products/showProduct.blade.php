@@ -1,142 +1,104 @@
 <x-layout>
     <x-slot:title>
-        Book Details
+        {{__('shop.product.Product-details')}}
     </x-slot:title>
 
-    <div class="container">
-        <h1 class="subtitle">{{ $title }}</h1>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">{{ $title }}</h1>
 
         {{-- Error message template component --}}
         @include('components.validationErrorMessage')
 
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="form-container">
-                    <table class="table">
-                        <tr>
-                            <td>
-                                <img src="{{ $Product->photo }}"
-                                        class="pic_size" />
-                            </td>
-                        </tr>
-                    </table>
+        <div class="flex justify-center">
+            <div class="w-full max-w-[800px]">
+
+                <div class="bg-[#f8f9fa] p-8 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
+
+                    <div class="mb-6">
+                        <img src="{{ $Product->photo }}" class="w-1/4 h-auto object-cover rounded" />
+                    </div>
+
                     <form action="/products/{{ $Product->id }}/buy"
-                            method="post" class="d-flex align-items-center gap-2"
-                            onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = 'Wait...';">
+                          method="post"
+                          class="flex flex-col gap-4"
+                          onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = __('shop.Buttons.Wait');">
                         @csrf
-                        <table class="table">
-                            <tr>
-                                <th class="table_head" >{{ __('NAME:') }}</th>
-                                <td class="table_row">{{ $Product->name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="table_head" >{{ __('PRICE:') }}</th>
-                                <td class="table_row">
-                                    {{ $Product->price }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="table_head" >{{ __('REMAIN:') }}</th>
-                                <td class="table_row">
-                                    {{ $Product->remain_count }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="table_head" >{{ __('BLURB:') }}</th>
-                                <td>
-                                    {{ $Product->introduction }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="table_head">{{ __('QUANTITY:') }}</th>
-                                <td>
-                                    <select name="buy_count">
-                                        @foreach(range(1, min($Product->remain_count, 10)) as $count)
-                                            <option value="{{ $count }}">{{ $count }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            <tr>
-                                <th class="table_head">{{ __('PAY WITH:') }}</th>
-                                <td>
-                                    <select name="pay_with">
-                                        <option value="">{{ __('Please Select') }}</option>
-                                        @foreach($PayTypes as $PayType)
-                                            <option value="{{ $PayType->id }}">{{ $PayType->type }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            <tr>
-                            <tr>
-                                <td>
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        {{ __('Buy') }}
-                                    </button>
-                                </td>
-                                <td>
-                                    <a href="/products" class="btn btn-primary btn-sm" onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">Cancel</a>
-                                </td>
-                            </tr>
+
+                        {{-- Data Table --}}
+                        <table class="w-full text-left border-collapse">
+                            <tbody>
+                                {{-- Name --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-3 pr-4 font-bold text-[#7d7272]/85 w-1/4 align-middle">{{ __('shop.product.Detail-fields.NAME')}}</th>
+                                    <td class="py-3 font-bold align-middle">{{ $Product->name }}</td>
+                                </tr>
+
+                                {{-- Price --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-3 pr-4 font-bold text-[#7d7272]/85 align-middle">{{ __('shop.product.Detail-fields.PRICE')}}</th>
+                                    <td class="py-3 font-bold align-middle">{{ $Product->price }}</td>
+                                </tr>
+
+                                {{-- Remain --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-3 pr-4 font-bold text-[#7d7272]/85 align-middle">{{ __('shop.product.Detail-fields.REMAIN')}}</th>
+                                    <td class="py-3 font-bold align-middle">{{ $Product->remain_count }}</td>
+                                </tr>
+
+                                {{-- Blurb --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-3 pr-4 font-bold text-[#7d7272]/85 align-middle">{{ __('shop.product.Detail-fields.BLURB')}}</th>
+                                    <td class="py-3 align-middle">{{ $Product->introduction }}</td>
+                                </tr>
+
+                                {{-- Quantity Select --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-3 pr-4 font-bold text-[#7d7272]/85 align-middle">{{ __('shop.product.Detail-fields.QUANTITY')}}</th>
+                                    <td class="py-3 align-middle">
+                                        <select name="buy_count" class="w-fit border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                            @foreach(range(1, min($Product->remain_count, 10)) as $count)
+                                                <option value="{{ $count }}">{{ $count }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                {{-- Pay With Select --}}
+                                <tr class="border-b border-gray-100 last:border-0">
+                                    <th class="py-3 pr-4 font-bold text-[#7d7272]/85 align-middle">{{ __('shop.product.Detail-fields.Pay-with')}}</th>
+                                    <td class="py-3 align-middle">
+                                        <select name="pay_with" class="w-fit border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                            <option value="">{{ __('shop.product.Detail-fields.Please-select') }}</option>
+                                            @foreach($PayTypes as $PayType)
+                                                <option value="{{ $PayType->id }}">{{ $PayType->type }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                {{-- Buttons Row --}}
+                                <tr>
+                                    <td colspan="2" class="pt-6">
+                                        <div class="flex items-center gap-4">
+                                            {{-- Buy Button --}}
+                                            <button type="submit" class="min-w-[120px] px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors duration-200 disabled:opacity-50">
+                                                {{ __('shop.Buttons.Buy') }}
+                                            </button>
+
+                                            {{-- Cancel Button --}}
+                                            <a href="/products"
+                                               class="min-w-[120px] px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors duration-200 text-center inline-block decoration-0"
+                                               onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
+                                                {{ __('shop.Buttons.Cancel') }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <style>
-    .form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .row {
-        min-height: 80px;
-        align-items: center;
-    }
-
-    .subtitle {
-        font-weight: bold;
-        font-size: 1.8em;
-    }
-
-    .table_head {
-        color:rgba(125, 114, 114, 0.854);
-    }
-
-    .table_row {
-        font-weight: bold;
-    }
-
-    .pic_size {
-        width: 25%;
-        height: 25%;
-    }
-
-    /* Ensure labels maintain proper alignment on small screens */
-    @media (max-width: 576px) {
-        .col-sm-3 .form-label {
-            text-align: left !important;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-container {
-            padding: 1rem;
-        }
-    }
-
-    /* For more precise control, add this CSS */
-    .form-control {
-        width: 100%;
-    }
-
-    .btn {
-        min-width: 120px;
-    }
-    </style>
-
 </x-layout>

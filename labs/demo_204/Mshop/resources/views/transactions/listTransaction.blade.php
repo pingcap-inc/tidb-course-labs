@@ -1,57 +1,63 @@
 <x-layout>
 
     {{-- Page loading window --}}
-    <div id="loadingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background: white; padding: 30px 40px; border-radius: 12px; text-align: center;">
-            <div style="width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite;"></div>
-            <p style="margin: 0; font-size: 16px; color: #333;">Please wait...</p>
+    <div id="loadingModal" class="hidden fixed inset-0 w-full h-full bg-black/70 z-[9999] justify-center items-center">
+        <div class="bg-white px-10 py-8 rounded-xl text-center">
+            <div class="w-10 h-10 border-[3px] border-[#f3f3f3] border-t-[#3498db] rounded-full mx-auto mb-4 animate-spin"></div>
+            <p class="m-0 text-base text-[#333]">{{ __('shop.Message.Please-wait') }}</p>
         </div>
     </div>
 
     <x-slot:title>
-        Transactions List
+        {{ __('shop.transaction.Transactions-list') }}
     </x-slot:title>
 
-    <div class="container">
-        <h1 class=" subtitle ">{{ $title }}</h1>
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold mb-6">{{ $title }}</h1>
 
         {{-- Error message template component --}}
         @include('components.validationErrorMessage')
 
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table" style="text-align: center;">
-                    <tr class=" table_head ">
-                        <th>{{ __('PRODUCT NAME') }}</th>
-                        <th>{{ __('CUSTOMER NAME') }}</th>
-                        <th>{{ __('UNIT PRICE') }}</th>
-                        <th>{{ __('QUANTITY') }}</th>
-                        <th>{{ __('ORDER AMOUNT') }}</th>
-                        <th>{{ __('PAY WITH') }}</th>
-                        <th>{{ __('ORDER TIME') }}</th>
-                    </tr>
-                    @foreach($TransactionPaginate as $Transaction)
-                        <tr>
-                            <td class=" table_row ">
-                                @php
-                                // Truncation to 26 characters, any excess will be displayed...
-                                $displayName = strlen($Transaction->Product->name) > 24
-                                    ? substr($Transaction->Product->name, 0, 26) . '...'
-                                    : $Transaction->Product->name;
-                                @endphp
-                                {{ $displayName }}
-                            </td>
-                            <td> {{ $Transaction->User->name }} </td>
-                            <td> {{ $Transaction->price }}</td>
-                            <td> {{ $Transaction->buy_count }}</td>
-                            <td> {{ $Transaction->total_price }}</td>
-                            <td> {{ $Transaction->PayType->type }}</td>
-                            <td> {{ $Transaction->created_at }}</td>
+        <div class="w-full">
+            <div class="w-full overflow-x-auto">
+                <table class="w-full text-center border-collapse">
+                    <thead>
+                        <tr class="bg-[#5c4a31ce] text-white font-bold text-2xl">
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.PRODUCT-NAME') }}</th>
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.CUSTOMER-NAME') }}</th>
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.UNIT-PRICE') }}</th>
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.QUANTITY') }}</th>
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.ORDER-AMOUNT') }}</th>
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.PAY-WITH') }}</th>
+                            <th class="p-3 whitespace-nowrap">{{ __('shop.transaction.fields.ORDER-TIME') }}</th>
                         </tr>
-                    @endforeach
+                    </thead>
+                    <tbody>
+                        @foreach($TransactionPaginate as $Transaction)
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="p-3 font-bold text-xl align-middle">
+                                    @php
+                                    // Truncation logic
+                                    $displayName = strlen($Transaction->Product->name) > 24
+                                        ? substr($Transaction->Product->name, 0, 26) . '...'
+                                        : $Transaction->Product->name;
+                                    @endphp
+                                    {{ $displayName }}
+                                </td>
+                                <td class="p-3 align-middle"> {{ $Transaction->User->name }} </td>
+                                <td class="p-3 align-middle"> {{ $Transaction->price }}</td>
+                                <td class="p-3 align-middle"> {{ $Transaction->buy_count }}</td>
+                                <td class="p-3 align-middle"> {{ $Transaction->total_price }}</td>
+                                <td class="p-3 align-middle"> {{ $Transaction->PayType->type }}</td>
+                                <td class="p-3 align-middle"> {{ $Transaction->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
+            </div>
 
-                {{-- Page navigation button --}}
+            {{-- Page navigation button --}}
+            <div class="mt-4">
                 {{ $TransactionPaginate->links() }}
             </div>
         </div>
@@ -67,24 +73,5 @@
             }, 2000);
         });
     </script>
-
-    <style>
-    .subtitle {
-        font-weight: bold;
-        font-size: 1.8em;
-    }
-
-    .table_head {
-        background-color: #5c4a31ce;
-        color:white;
-        font-weight: bold;
-        font-size: 1.5em;
-    }
-
-    .table_row {
-        font-weight: bold;
-        font-size: 1.2em;
-    }
-    </style>
 
 </x-layout>

@@ -25,7 +25,7 @@ class TransactionController extends Controller
 
         // Set the title and data for view.
         $binding = [
-            'title' => 'Transactions list',
+            'title' => __('shop.transaction.Transactions-list'),
             'TransactionPaginate'=> $TransactionPaginate,
         ];
 
@@ -52,7 +52,7 @@ class TransactionController extends Controller
         $transaction = Transaction::findOrFail($transaction_id);
         //
         $binding = [
-            'title' => 'Order Details',
+            'title' => __('shop.transaction.Order-details'),
             'Transaction'=> $transaction,
         ];
         return view('transactions.showTransaction', $binding);
@@ -76,7 +76,7 @@ class TransactionController extends Controller
 
         // Set the title and data for view.
         $binding = [
-            'title' => "Your histroy orders:" ,
+            'title' => __('shop.transaction.Your-histroy-orders'),
             'TransactionPaginate'=> $TransactionPaginate,
         ];
 

@@ -35,7 +35,7 @@ class ProductsController extends Controller
 
         // Set the title and data for view.
         $binding = [
-            'title' => 'Book Management',
+            'title' => __('shop.product.Book-management'),
             'ProductPaginate'=> $ProductPaginate,
         ];
 
@@ -60,12 +60,12 @@ class ProductsController extends Controller
 
         // Set the title and data for view.
         $binding = [
-            'title' => 'Book List',
+            'title' => __('shop.product.Book-list'),
             'ProductPaginate'=> $ProductPaginate,
         ];
 
         // Sent the products data to view.
-        return view('products.listProduct', $binding);
+        return view('products.ListProduct', $binding);
     }
 
     /**
@@ -107,11 +107,11 @@ class ProductsController extends Controller
         //
         $payTypes = PayType::all();  // Get all pay types.
         $binding = [
-            'title' => 'Product Details',
+            'title' => __('shop.product.Product-details'),
             'Product' => $product,
             'PayTypes' => $payTypes,
         ];
-        return view('products.showProduct', $binding);
+        return view('products.ShowProduct', $binding);
     }
 
     /**
@@ -229,7 +229,7 @@ class ProductsController extends Controller
          * error 'Error 8028: Information schema is changed during the execution of the statement' by retry for purchase transaction.
          * If $OnlineSchemaChange is true, exectue function $this->executeTransaction(...) for purchase transaction without retry.
          */
-        $OnlineSchemaChange = false;
+        $OnlineSchemaChange = true;
 
         if($OnlineSchemaChange) {
 
@@ -293,7 +293,7 @@ class ProductsController extends Controller
             // Return Purchase Success Message
             $message = [
                 'msg' => [
-                    ' Purchase Successfully！',
+                    __('shop.Message.Purchase-successfully'),
                 ],
             ];
             return redirect()
@@ -344,7 +344,7 @@ class ProductsController extends Controller
             $remain_count_after_buy = $product->remain_count - $buy_count;
             if ($remain_count_after_buy < 0) {
                 // Remaining quantity after purchase is less than 0, insufficient to sell to the user
-                throw new \Exception('Insufficient quantity of goods, unable to purchase.');
+                throw new \Exception(__('shop.Message.Insufficient-goods'));
             }
 
             // Record Remaining Quantity After Purchase
@@ -372,7 +372,7 @@ class ProductsController extends Controller
             // Return Purchase Success Message
             $message = [
                 'msg' => [
-                    ' Purchase Successfully！',
+                    __('shop.Message.Purchase-successfully'),
                 ],
             ];
             return redirect()
