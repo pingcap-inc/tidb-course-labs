@@ -60,7 +60,7 @@
                                     <td class="py-4 align-middle">
                                         <textarea class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                   id="introduction" name="introduction" rows="2" maxlength="200"
-                                                  placeholder="{{ __('Burb of book') }}">{{ old('introduction', $Product->introduction) }}</textarea>
+                                                  placeholder="{{ __('Blurb of book') }}">{{ old('introduction', $Product->introduction) }}</textarea>
                                     </td>
                                 </tr>
 

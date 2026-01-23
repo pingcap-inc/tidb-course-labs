@@ -227,9 +227,9 @@ class ProductsController extends Controller
         /**
          * If $OnlineSchemaChange is true, execute function $this->executeTransactionWithRetry(...) to prevent from the
          * error 'Error 8028: Information schema is changed during the execution of the statement' by retry for purchase transaction.
-         * If $OnlineSchemaChange is true, exectue function $this->executeTransaction(...) for purchase transaction without retry.
+         * If $OnlineSchemaChange is false, execute function $this->executeTransaction(...) for purchase transaction without retry.
          */
-        $OnlineSchemaChange = true;
+        $OnlineSchemaChange = false;
 
         if($OnlineSchemaChange) {
 

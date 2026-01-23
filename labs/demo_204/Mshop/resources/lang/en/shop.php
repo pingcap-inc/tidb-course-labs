@@ -22,7 +22,7 @@ return [
             'NAME'            => 'Title:',
             'PRICE'           => 'Price:',
             'REMAIN'          => 'In Stock:',
-            'BLURB'           => 'Synopsis:',
+            'BLURB'           => 'Blurb:',
             'QUANTITY'        => 'Quantity:',
             'Pay-with'        => 'Payment Method:',
             'Please-select'   => 'Please Select',
@@ -48,7 +48,7 @@ return [
             'NAME'            => 'Title:',
             'PRICE'           => 'Price:',
             'REMAIN'          => 'Inventory:',
-            'BLURB'           => 'Synopsis:',
+            'BLURB'           => 'Blurb:',
             'QUANTITY'        => 'Quantity:',
             'STATUS'          => 'Status:',
             'Status-item'     => [

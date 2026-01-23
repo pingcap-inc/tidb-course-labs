@@ -30,11 +30,11 @@ class TransactionController extends Controller
         ];
 
         /**
-         * If $hasSave is true, it will use the view 'Transactions.listTransactionSave.blade.php' with 'save' column in the its table to list the transactions.
-         * If $hasSave is false, it will use the view 'Transactions.listTransaction.blade.php' without 'save' column in the its table to list the transactions.
+         * If $hasDiscount is true, it will use the view 'Transactions.listTransactionSave.blade.php' with 'discount' column in the its table to list the transactions.
+         * If $hasDiscount is false, it will use the view 'Transactions.listTransaction.blade.php' without 'discount' column in the its table to list the transactions.
          */
-        $hasSave = false;
-        if($hasSave) {
+        $hasDiscount = false;
+        if($hasDiscount) {
             // Sent the Transactions data to view with the column ‘SAVE’.
             return view('transactions.listTransactionSave', $binding);
         }
