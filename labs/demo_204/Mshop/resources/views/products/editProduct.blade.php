@@ -49,7 +49,7 @@
                                     <td class="py-1 align-middle">
                                         <input type="text" class="w-1/2 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                id="name" name="name"
-                                               placeholder="{{ __('Name of book') }}"
+                                               placeholder="{{ __('Name of the book') }}"
                                                value="{{ old('name', $Product->name) }}">
                                     </td>
                                 </tr>
@@ -60,7 +60,7 @@
                                     <td class="py-4 align-middle">
                                         <textarea class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                   id="introduction" name="introduction" rows="2" maxlength="200"
-                                                  placeholder="{{ __('Blurb of book') }}">{{ old('introduction', $Product->introduction) }}</textarea>
+                                                  placeholder="{{ __('Blurb of the book') }}">{{ old('introduction', $Product->introduction) }}</textarea>
                                     </td>
                                 </tr>
 
@@ -70,7 +70,7 @@
                                     <td class="py-1 align-middle">
                                         <input type="text" class="w-1/4 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                id="price" name="price"
-                                               placeholder="{{ __('Price of book') }}"
+                                               placeholder="{{ __('Price of the book') }}"
                                                value="{{ old('price', $Product->price) }}">
                                     </td>
                                 </tr>
@@ -81,7 +81,7 @@
                                     <td class="py-1 align-middle">
                                         <input type="text" class="w-1/4 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                id="remain_count" name="remain_count"
-                                               placeholder="{{ __('Quantity of books') }}"
+                                               placeholder="{{ __('Quantity of the book') }}"
                                                value="{{ old('remain_count', $Product->remain_count) }}">
                                     </td>
                                 </tr>
