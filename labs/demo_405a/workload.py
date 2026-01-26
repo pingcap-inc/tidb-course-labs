@@ -1,0 +1,106 @@
+import time
+import sys
+import argparse
+import mysql.connector
+from mysql.connector import errorcode
+from lab_connection import get_connection
+
+def insert_record(connection, cursor, insert_stmt, round_num):
+    """Insert a record, handling schema mutation errors"""
+    print(f"Inserting record {round_num}")
+
+    try:
+        # Attempt to execute the prepared statement
+        cursor.execute(insert_stmt, (round_num, ))
+        time.sleep(1)  # Simulate some work
+        connection.commit()
+        return True
+
+    except mysql.connector.Error as err:
+        # Check if it's error code 8028 (schema mutation)
+        if err.errno == 8028:
+            print("Schema mutation encountered, retrying...")
+            retry_attempts = 0
+            max_retries = 5
+            backoff_time = 1  # Start with 1 second backoff
+            while retry_attempts < max_retries:
+                try:
+                    time.sleep(backoff_time)
+                    cursor.execute(insert_stmt, (round_num, ))
+                    time.sleep(1)
+                    connection.commit()
+                    return True
+                except mysql.connector.Error as retry_err:
+                    if retry_err.errno == 8028:
+                        retry_attempts += 1
+                        backoff_time *= 2  # Exponential backoff
+                        print(f"Retry {retry_attempts} failed: {retry_err}. Retrying in {backoff_time} seconds...")
+                    else:
+                        print(f"Retry failed with different error: {retry_err}")
+                        return False
+            print("Max retries reached. Moving to next record.")
+            return False
+        else:
+            # Handle other MySQL errors
+            print(f"Error: {err}")
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Check your username and password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(f"Error code: {err.errno}")
+            return False
+
+
+def run_insert_job(table_name="dual"):
+    """Run continuous insert job, handling online DDL operations"""
+    try:
+        # Connect to TiDB with auto-commit turned off
+        with get_connection(autocommit=False) as connection:
+            print(f"Connected to TiDB: {connection.user}@{connection.server_host}:{connection.server_port} using database {connection.database}")
+
+            # Create a cursor
+            with connection.cursor() as cursor:
+
+                # SQL for inserting data (similar to Java example)
+                insert_stmt = f"INSERT INTO {table_name} (k, c) VALUES (%s, 'A')"
+
+                # Run continuous insert loop
+                round_num = 0
+                while True:
+                    success = insert_record(connection, cursor, insert_stmt, round_num)
+                    if success:
+                        round_num += 1
+                    else:
+                        # Pause briefly before retrying on failure
+                        time.sleep(2)
+
+    except KeyboardInterrupt:
+        print("\nInsert job stopped by user")
+    except mysql.connector.Error as err:
+        print(f"Connection error: {err}")
+        sys.exit(1)
+
+
+def main():
+    """Parse arguments and run the specified operation"""
+    parser = argparse.ArgumentParser(description="Online Schema Change Demonstration")
+
+    # Create mutually exclusive group for operations
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--insert", action="store_true", help="Run the insert job")
+
+    # Optional table name argument
+    parser.add_argument("table", nargs="?", default="dual",
+                        help="Name of the table to use (default: dual)")
+
+    args = parser.parse_args()
+
+    if args.insert:
+        print(f"Starting insert job on table {args.table}")
+        print("You can now run ALTER TABLE in another terminal to add a column on table dual")
+        run_insert_job(args.table)
+
+
+if __name__ == "__main__":
+    main()
