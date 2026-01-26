@@ -52,7 +52,7 @@ def insert_record(connection, cursor, insert_stmt, round_num):
             return False
 
 
-def run_insert_job(table_name="dual"):
+def run_insert_job(table_name="demo_405a"):
     """Run continuous insert job, handling online DDL operations"""
     try:
         # Connect to TiDB with auto-commit turned off
@@ -91,14 +91,14 @@ def main():
     group.add_argument("--insert", action="store_true", help="Run the insert job")
 
     # Optional table name argument
-    parser.add_argument("table", nargs="?", default="dual",
-                        help="Name of the table to use (default: dual)")
+    parser.add_argument("table", nargs="?", default="demo_405a",
+                        help="Name of the table to use (default: demo_405a)")
 
     args = parser.parse_args()
 
     if args.insert:
         print(f"Starting insert job on table {args.table}")
-        print("You can now run ALTER TABLE in another terminal to add a column on table dual")
+        print("You can now run ALTER TABLE in another terminal to add a column on table demo_405a")
         run_insert_job(args.table)
 
 
