@@ -35,11 +35,11 @@ class TransactionController extends Controller
          */
         $hasDiscount = false;
         if($hasDiscount) {
-            // Sent the Transactions data to view with the column ‘SAVE’.
+            // Sent the Transactions data to view with the column 'discount'.
             return view('transactions.listTransactionSave', $binding);
         }
         else {
-            // Sent the Transactions data to view without the column ‘SAVE’.
+            // Sent the Transactions data to view without the column 'discount'.
             return view('transactions.listTransaction', $binding);
         }
     }
