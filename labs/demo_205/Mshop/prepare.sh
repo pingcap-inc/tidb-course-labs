@@ -57,7 +57,7 @@ run_step "php artisan migrate"
 
 # 4. Import initial database schema
 # Note: Ensure 'initshop.sql' exists in the current directory
-run_step "mysql -u lab -plabpass -P3306 shop < initshop.sql"
+run_step "mysql -h ${LAB:AWS_AURORA_SERVERLESS_ENDPOINT} -u ${LAB:AWS_AURORA_SERVERLESS_MASTER_USERNAME} -p${LAB:AWS_AURORA_SERVERLESS_MASTER_PASSWORD} -P${LAB:AWS_AURORA_SERVERLESS_PORT} shop < initshop.sql"
 
 # 5. Require specific image processing library
 run_step "composer require intervention/image:^2"
