@@ -1,3 +1,4 @@
+# General patterns
 *.class
 /stage/*
 /stage-archive/*
@@ -12,11 +13,43 @@ dist/
 /docs/build/
 __pycache__/
 *.swp
-.DS_Store
 ~*
 *~
 ~$*
 .vscode/
-*.swp
 /course_scripts/raw-*
 /course_scripts/*.class
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel / PHP
+vendor/
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+.phpactor.json
+auth.json
+Homestead.yaml
+Homestead.json
+/.vagrant
+
+# Laravel 4 specific
+**/bootstrap/compiled.php
+**/app/storage/
+
+# Laravel 5 & Lumen specific
+**/public/storage
+**/public/hot
+**/public/build
+
+# Laravel 5 & Lumen specific with changed public path
+**/public_html/storage
+**/public_html/hot
+
+# Laravel storage
+**/storage/*.key
+**/storage/pail
