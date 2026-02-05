@@ -54,7 +54,7 @@ run_step "php artisan migrate"
 
 # 3. Import initial database schema
 # Note: Ensure 'initshop.sql' exists in the current directory
-run_step "mysql -u lab -plabpass -P3306 ${SERVERLESS_CLUSTER_DATABASE_NAME} < initshop.sql"
+run_step "mysql -h mysql -u lab -plabpass -P3306 ${SERVERLESS_CLUSTER_DATABASE_NAME} < initshop.sql"
 
 # 4. Require specific image processing library
 run_step "composer require intervention/image:^2"
