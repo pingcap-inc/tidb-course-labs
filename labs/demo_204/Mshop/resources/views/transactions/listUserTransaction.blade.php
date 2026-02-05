@@ -35,7 +35,7 @@
                         @foreach($TransactionPaginate as $Transaction)
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
                                 <td class="p-3 font-bold text-xl align-middle">
-                                    <a href="/products/{{ $Transaction->Product->id }}" class="hover:underline hover:text-blue-600 transition-colors">
+                                    <a href="{{ url('/products/' . $Transaction->Product->id) }}" class="hover:underline hover:text-blue-600 transition-colors">
                                         {{ $Transaction->Product->name }}
                                     </a>
                                 </td>
@@ -51,7 +51,7 @@
                         <tr>
                             <td colspan="5" class="p-3"></td>
                             <td class="p-3 align-middle">
-                                <a href="/products/"
+                                <a href="{{ url('/products') }}"
                                    class="inline-block bg-black hover:bg-gray-800 text-white font-bold py-1 px-3 rounded text-sm transition-colors duration-200"
                                    onclick="this.style.pointerEvents='none'; this.innerText='{{ __("shop.Buttons.Loading") }}';">
                                     {{ __('shop.Buttons.Return') }}

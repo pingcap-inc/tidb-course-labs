@@ -18,11 +18,11 @@
                         <img src="{{ $Product->photo }}" class="w-1/4 h-auto object-cover rounded" />
                     </div>
 
-                    <form action="/products/{{ $Product->id }}/buy"
-                          method="post"
-                          class="flex flex-col gap-4"
-                          onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = '{{ __("shop.Buttons.Wait") }}';">
-                        @csrf
+                        <form action="{{ url('/products/' . $Product->id . '/buy') }}"
+                              method="post"
+                              class="flex flex-col gap-4"
+                              onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = '{{ __("shop.Buttons.Wait") }}';">
+                            @csrf
 
                         {{-- Data Table --}}
                         <table class="w-full text-left border-collapse">
@@ -86,7 +86,7 @@
                                             </button>
 
                                             {{-- Cancel Button --}}
-                                            <a href="/products"
+                                            <a href="{{ url('/products') }}"
                                                class="min-w-[120px] px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors duration-200 text-center inline-block decoration-0"
                                                onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
                                                 {{ __('shop.Buttons.Cancel') }}

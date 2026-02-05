@@ -39,7 +39,7 @@
                                 </td>
                                 {{-- Table Pic Row --}}
                                 <td class="p-2 align-middle">
-                                    <a href="/products/{{ $Product->id }}" class="inline-block">
+                                    <a href="{{ url('/products/' . $Product->id) }}" class="inline-block">
                                         {{-- Pic Content: w:90px h:130px, object-cover --}}
                                         <img src="{{ $Product->photo }}" class="w-[90px] h-[130px] object-cover rounded mx-auto block" />
                                     </a>
@@ -49,7 +49,7 @@
                                 <td class="p-4 align-middle"> {{ $Product->remain_count }}</td>
                                 <td class="p-4 align-middle">
                                     {{-- Button: Restore btn-primary btn-sm styles --}}
-                                    <a href="/products/{{ $Product->id }}"
+                                    <a href="{{ url('/products/' . $Product->id) }}"
                                     class="inline-block bg-black hover:bg-gray-800 text-white font-bold py-1 px-3 rounded text-sm transition-colors duration-200"
                                     onclick="this.style.pointerEvents='none'; this.innerText='{{ __("shop.Buttons.Loading") }}';">
                                     {{ __('shop.Buttons.View') }}

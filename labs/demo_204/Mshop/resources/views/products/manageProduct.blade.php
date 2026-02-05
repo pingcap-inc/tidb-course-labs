@@ -51,7 +51,7 @@
 
                                 {{-- Picture Row --}}
                                 <td class="p-2 align-middle">
-                                    <a href="/products/{{ $Product->id }}" class="inline-block">
+                                    <a href="{{ url('/products/' . $Product->id) }}" class="inline-block">
                                         <img src="{{ $Product->photo }}" class="w-[90px] h-[130px] object-cover rounded mx-auto block" />
                                     </a>
                                 </td>
@@ -84,7 +84,7 @@
 
                                 {{-- Edit Button --}}
                                 <td class="p-3 align-middle">
-                                    <a href="/products/{{ $Product->id }}/edit"
+                                    <a href="{{ url('/products/' . $Product->id . '/edit') }}"
                                        class="inline-block bg-black hover:bg-gray-800 text-white font-bold py-1 px-3 rounded text-sm transition-colors duration-200">
                                         {{ __('shop.Buttons.Edit') }}
                                     </a>
@@ -92,7 +92,7 @@
 
                                 {{-- Delete Button --}}
                                 <td class="p-3 align-middle">
-                                    <form method="POST" action="/products/{{ $Product->id }}">
+                                    <form method="POST" action="{{ url('/products/' . $Product->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

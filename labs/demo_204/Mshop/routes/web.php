@@ -6,7 +6,7 @@ use App\Http\Controllers\TransactionController;
 
 // Home
 Route::get('/', function () {
-    return redirect('/products');
+    return redirect()->to(url('/products'));
 });
 
 // Product

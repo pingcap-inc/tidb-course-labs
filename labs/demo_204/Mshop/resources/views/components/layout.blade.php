@@ -29,7 +29,7 @@
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
             {{-- Logo --}}
             <div>
-                <a href="#" class="text-xl font-bold px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors inline-flex items-center">
+                <a href="{{ url('/products') }}" class="text-xl font-bold px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors inline-flex items-center">
                     📖 Bookstore 🏬
                 </a>
             </div>

@@ -10,7 +10,7 @@
         <div class="flex justify-center">
             <div class="w-full max-w-[800px]">
 
-                <form id="main-form" action="/products/{{ $Product->id }}" method="post" enctype="multipart/form-data">
+                <form id="main-form" action="{{ url('/products/' . $Product->id) }}" method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
 

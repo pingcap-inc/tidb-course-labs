@@ -52,14 +52,14 @@
                                 <td class="py-3 align-middle">
                                     <div class="flex flex-wrap gap-3">
                                         {{-- Button 1: All orders --}}
-                                        <a href="/transactions/{{ $Transaction->user_id }}/user"
+                                        <a href="{{ url('/transactions/' . $Transaction->user_id . '/user') }}"
                                            class="inline-block min-w-[120px] px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors duration-200 text-center decoration-0"
                                            onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
                                             {{ __('shop.Buttons.All-orders') }}
                                         </a>
 
                                         {{-- Button 2: Return --}}
-                                        <a href="/products/"
+                                        <a href="{{ url('/products') }}"
                                            class="inline-block min-w-[120px] px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors duration-200 text-center decoration-0"
                                            onclick="this.style.pointerEvents='none'; this.innerText='Loading...';">
                                             {{ __('shop.Buttons.Return') }}
