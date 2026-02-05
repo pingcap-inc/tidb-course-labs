@@ -54,7 +54,7 @@ run_step "php artisan migrate"
 
 # 3. Import initial database schema
 # Note: Ensure 'initshop.sql' exists in the current directory
-run_step "mysql -u lab -plabpass -P3306 shop < initshop.sql"
+run_step "mysql -u lab -plabpass -P3306 ${SERVERLESS_CLUSTER_DATABASE_NAME} < initshop.sql"
 
 # 4. Require specific image processing library
 run_step "composer require intervention/image:^2"
@@ -67,9 +67,5 @@ run_step "composer dump-autoload"
 
 # 7. Create symbolic link for storage
 run_step "php artisan storage:link"
-
-# 8. Run development script defined in composer.json
-# Note: Ensure 'dev' script is defined in your composer.json
-run_step "composer run dev"
 
 echo -e "${GREEN}>>> All tasks completed successfully! <<<${NC}"
