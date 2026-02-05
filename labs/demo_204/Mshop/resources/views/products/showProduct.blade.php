@@ -15,7 +15,7 @@
                 <div class="bg-[#f8f9fa] p-8 rounded-lg shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
 
                     <div class="mb-6">
-                        <img src="{{ $Product->photo }}" class="w-1/4 h-auto object-cover rounded" />
+                        <img src="{{ $Product->photo_url }}" class="w-1/4 h-auto object-cover rounded" />
                     </div>
 
                         <form action="{{ url('/products/' . $Product->id . '/buy') }}"

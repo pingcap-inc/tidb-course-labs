@@ -93,7 +93,7 @@
                                         <input type="file" class="w-1/2 border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-1 file:px-2 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                                                id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
 
-                                        <img src="{{ $Product->photo ?: '' }}"
+                                        <img src="{{ $Product->photo_url ?: '' }}"
                                              id="preview-img"
                                              alt="Preview"
                                              class="max-w-[150px] mt-3 rounded shadow-sm {{ $Product->photo ? 'block' : 'hidden' }}">

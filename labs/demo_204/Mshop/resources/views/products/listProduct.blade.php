@@ -41,7 +41,7 @@
                                 <td class="p-2 align-middle">
                                     <a href="{{ url('/products/' . $Product->id) }}" class="inline-block">
                                         {{-- Pic Content: w:90px h:130px, object-cover --}}
-                                        <img src="{{ $Product->photo }}" class="w-[90px] h-[130px] object-cover rounded mx-auto block" />
+                                        <img src="{{ $Product->photo_url }}" class="w-[90px] h-[130px] object-cover rounded mx-auto block" />
                                     </a>
                                 </td>
                                 <td class="p-4 align-middle"> {{ $Product->ProductType->type }}</td>
