@@ -24,23 +24,15 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure URL prefix for reverse proxy environments.
+     * Configure URL scheme and prefix for reverse proxy environments.
      * Set URL_PREFIX in .env file (e.g., URL_PREFIX=/vscode/proxy/8000)
      */
     protected function configureUrlPrefix(): void
     {
-        $prefix = config('app.url_prefix', '');
-
-        if (empty($prefix)) {
-            return;
-        }
-
         // Skip URL configuration in CLI mode (artisan commands)
         if ($this->app->runningInConsole()) {
             return;
         }
-
-        $prefix = '/' . trim($prefix, '/');
 
         $request = request();
         
@@ -48,10 +40,21 @@ class AppServiceProvider extends ServiceProvider
         $scheme = $request->header('X-Forwarded-Proto') 
             ?? ($request->secure() ? 'https' : 'http');
         
-        // Get host from X-Forwarded-Host header or from request
-        $host = $request->header('X-Forwarded-Host') 
-            ?? $request->getHost();
+        // Force HTTPS scheme if behind proxy with X-Forwarded-Proto
+        if ($scheme === 'https') {
+            URL::forceScheme('https');
+        }
 
-        URL::forceRootUrl("{$scheme}://{$host}{$prefix}");
+        // Handle URL prefix if configured
+        $prefix = config('app.url_prefix', '');
+        if (!empty($prefix)) {
+            $prefix = '/' . trim($prefix, '/');
+
+            // Get host from X-Forwarded-Host header or from request
+            $host = $request->header('X-Forwarded-Host')
+                ?? $request->getHost();
+
+            URL::forceRootUrl("{$scheme}://{$host}{$prefix}");
+        }
     }
 }
