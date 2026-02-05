@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionController;
 
+// Home
+Route::get('/', function () {
+    return redirect('/products');
+});
+
 // Product
 Route::group(['prefix' => 'products'], function(){
     //List products.

@@ -49,29 +49,26 @@ echo "------------------------------------------------------------"
 # 1. Install PHP dependencies
 run_step "composer install"
 
-# 2. Install Node.js dependencies
-run_step "npm install"
-
-# 3. Run database migrations
+# 2. Run database migrations
 run_step "php artisan migrate"
 
-# 4. Import initial database schema
+# 3. Import initial database schema
 # Note: Ensure 'initshop.sql' exists in the current directory
 run_step "mysql -u lab -plabpass -P3306 shop < initshop.sql"
 
-# 5. Require specific image processing library
+# 4. Require specific image processing library
 run_step "composer require intervention/image:^2"
 
-# 6. Clear configuration cache
+# 5. Clear configuration cache
 run_step "php artisan config:clear"
 
-# 7. Dump autoloader to optimize classes
+# 6. Dump autoloader to optimize classes
 run_step "composer dump-autoload"
 
-# 8. Create symbolic link for storage
+# 7. Create symbolic link for storage
 run_step "php artisan storage:link"
 
-# 9. Run development script defined in composer.json
+# 8. Run development script defined in composer.json
 # Note: Ensure 'dev' script is defined in your composer.json
 run_step "composer run dev"
 

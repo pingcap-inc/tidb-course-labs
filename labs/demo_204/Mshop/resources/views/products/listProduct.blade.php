@@ -1,9 +1,9 @@
 <x-layout>
 
     {{-- Page loading window --}}
-    {{-- Using the `hidden` class hides the element by default; JavaScript will then display it as a flex element. --}}
+    {{-- Display by default, JavaScript will hide it when the page is loaded. --}}
     {{-- z-[9999] is as z-index: 9999, bg-black/70 is as rgba(0,0,0,0.7) --}}
-    <div id="loadingModal" class="hidden fixed inset-0 z-[9999] w-full h-full bg-black/70 justify-center items-center">
+    <div id="loadingModal" class="flex fixed inset-0 z-[9999] w-full h-full bg-black/70 justify-center items-center">
         <div class="bg-white px-10 py-8 rounded-xl text-center">
             <div class="w-10 h-10 border-[3px] border-[#f3f3f3] border-t-[#3498db] rounded-full mx-auto mb-4 animate-spin"></div>
             <p class="m-0 text-base text-[#333]">{{ __('shop.Message.Please-wait') }}</p>
@@ -81,12 +81,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('loadingModal');
-            // By directly overriding the display style, the hidden class will be overridden by flex here.
-            modal.style.display = 'flex';
-
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 2000);
+            // Hide the loading modal immediately when the page is loaded.
+            modal.style.display = 'none';
         });
     </script>
 

@@ -34,26 +34,6 @@
                 </a>
             </div>
 
-            {{-- Right Menu --}}
-            <div class="flex items-center gap-2">
-                @auth
-                    <span class="text-sm font-medium mr-2">{{ auth()->user()->name }}</span>
-                    <form method="POST" action="/logout" class="inline">
-                        @csrf
-                        <button type="submit" class="text-sm font-medium px-3 py-2 rounded-md hover:bg-gray-100 transition-colors">
-                            Logout
-                        </button>
-                    </form>
-                @else
-                    <a href="#" class="text-sm font-medium px-3 py-2 rounded-md hover:bg-gray-100 transition-colors">
-                        {{ __('shop.layout.Sign-in') }}
-                    </a>
-                    {{-- A primary button with a simulated Lofi theme (black background). --}}
-                    <a href="#" class="text-sm font-medium px-4 py-2 rounded-md bg-black text-white hover:bg-gray-800 transition-colors">
-                        {{ __('shop.layout.Sign-up') }}
-                    </a>
-                @endauth
-            </div>
         </div>
     </nav>
 
