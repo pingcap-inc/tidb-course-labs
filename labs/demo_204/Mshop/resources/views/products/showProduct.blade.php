@@ -21,7 +21,7 @@
                     <form action="/products/{{ $Product->id }}/buy"
                           method="post"
                           class="flex flex-col gap-4"
-                          onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = __('shop.Buttons.Wait');">
+                          onsubmit="var btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = '{{ __("shop.Buttons.Wait") }}';">
                         @csrf
 
                         {{-- Data Table --}}

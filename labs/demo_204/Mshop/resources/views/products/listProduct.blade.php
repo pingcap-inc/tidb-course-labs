@@ -1,15 +1,5 @@
 <x-layout>
 
-    {{-- Page loading window --}}
-    {{-- Display by default, JavaScript will hide it when the page is loaded. --}}
-    {{-- z-[9999] is as z-index: 9999, bg-black/70 is as rgba(0,0,0,0.7) --}}
-    <div id="loadingModal" class="flex fixed inset-0 z-[9999] w-full h-full bg-black/70 justify-center items-center">
-        <div class="bg-white px-10 py-8 rounded-xl text-center">
-            <div class="w-10 h-10 border-[3px] border-[#f3f3f3] border-t-[#3498db] rounded-full mx-auto mb-4 animate-spin"></div>
-            <p class="m-0 text-base text-[#333]">{{ __('shop.Message.Please-wait') }}</p>
-        </div>
-    </div>
-
     <x-slot:title>
         {{ __('shop.product.Book-list')}}
     </x-slot:title>
@@ -61,7 +51,7 @@
                                     {{-- Button: Restore btn-primary btn-sm styles --}}
                                     <a href="/products/{{ $Product->id }}"
                                     class="inline-block bg-black hover:bg-gray-800 text-white font-bold py-1 px-3 rounded text-sm transition-colors duration-200"
-                                    onclick="this.style.pointerEvents='none'; this.innerText={{ __('shop.Buttons.Loading') }};">
+                                    onclick="this.style.pointerEvents='none'; this.innerText='{{ __("shop.Buttons.Loading") }}';">
                                     {{ __('shop.Buttons.View') }}
                                     </a>
                                 </td>
@@ -77,13 +67,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('loadingModal');
-            // Hide the loading modal immediately when the page is loaded.
-            modal.style.display = 'none';
-        });
-    </script>
 
 </x-layout>

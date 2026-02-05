@@ -53,7 +53,7 @@
                             <td class="p-3 align-middle">
                                 <a href="/products/"
                                    class="inline-block bg-black hover:bg-gray-800 text-white font-bold py-1 px-3 rounded text-sm transition-colors duration-200"
-                                   onclick="this.style.pointerEvents='none'; this.innerText=__('shop.Buttons.Loading');">
+                                   onclick="this.style.pointerEvents='none'; this.innerText='{{ __("shop.Buttons.Loading") }}';">
                                     {{ __('shop.Buttons.Return') }}
                                 </a>
                             </td>
