@@ -19,8 +19,14 @@ use Illuminate\Support\Facades\Log;
 class ProductsController extends Controller
 {
     /**
-     * Perform one random change on the book "Waterfalls" (price or inventory only).
-     * Returns JSON with product_id, field, old_value, new_value.
+     * Perform one random change on the book "Waterfalls".
+     *
+     * Rules:
+     * 1. Only the product named "Waterfalls" can be updated.
+     * 2. The change can be:
+     *    - a "buy" action that uses the existing purchase routine; OR
+     *    - an "add stock" action that increases inventory by a random amount.
+     * 3. When current stock (remain_count) is 2 or less, the next action must be "add stock".
      */
     public function autoChangeOne(Request $request)
     {
@@ -35,33 +41,66 @@ class ProductsController extends Controller
             ], 200);
         }
 
-        $actions = ['price', 'remain_count'];
-        $action = $actions[array_rand($actions)];
-        $oldValue = $product->{$action};
+        $currentStock = $product->remain_count;
 
-        switch ($action) {
-            case 'price':
-                $newValue = round(mt_rand(10, 9990) / 100, 2);
-                $product->price = $newValue;
-                break;
-            case 'remain_count':
-                $newValue = mt_rand(0, 99);
-                $product->remain_count = $newValue;
-                break;
-            default:
-                return response()->json(['ok' => false, 'message' => 'Unknown action'], 400);
+        // Decide action according to the rule:
+        // - If stock <= 2, we must add stock.
+        // - Otherwise, randomly choose between "buy" and "add_stock".
+        if ($currentStock <= 2) {
+            $action = 'add_stock';
+        } else {
+            $actions = ['buy', 'add_stock'];
+            $action = $actions[array_rand($actions)];
         }
 
+        if ($action === 'buy') {
+            // Use existing purchase logic (executeTransaction) to simulate a user buying this book.
+
+            // Choose a random buy count, but not more than current stock and at least 1.
+            $maxBuy = max(1, min(3, $currentStock));
+            $buyCount = mt_rand(1, $maxBuy);
+
+            // Pick a valid pay type (fallback to 1 if none found).
+            $payType = PayType::query()->first();
+            $payWith = $payType ? $payType->id : 1;
+
+            $validated = [
+                'buy_count' => $buyCount,
+                'pay_with'  => $payWith,
+            ];
+
+            // Reuse transaction logic; ignore the returned redirect response.
+            $this->executeTransaction(new Request($validated), $product, $validated);
+
+            // Reload product to get updated stock.
+            $product->refresh();
+
+            return response()->json([
+                'ok' => true,
+                'action' => 'buy',
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'buy_count' => $buyCount,
+                'remain_after' => $product->remain_count,
+                'message' => "Auto-buy: {$buyCount} copy/copies of \"{$product->name}\" purchased. New stock: {$product->remain_count}.",
+            ]);
+        }
+
+        // Add stock action.
+        $oldStock = $product->remain_count;
+        $addAmount = mt_rand(1, 10);
+        $product->remain_count = $oldStock + $addAmount;
         $product->save();
 
         return response()->json([
             'ok' => true,
+            'action' => 'add_stock',
             'product_id' => $product->id,
             'product_name' => $product->name,
-            'field' => $action,
-            'old_value' => $oldValue,
-            'new_value' => $newValue,
-            'message' => "Product #{$product->id} ({$product->name}): {$action} changed from {$oldValue} to {$newValue}",
+            'old_stock' => $oldStock,
+            'add_amount' => $addAmount,
+            'new_stock' => $product->remain_count,
+            'message' => "Auto-add stock: inventory for \"{$product->name}\" increased from {$oldStock} to {$product->remain_count} (+{$addAmount}).",
         ]);
     }
 
