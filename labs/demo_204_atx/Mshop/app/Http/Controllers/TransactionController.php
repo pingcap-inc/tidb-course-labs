@@ -15,13 +15,14 @@ class TransactionController extends Controller
         // Rows per page.
         $row_per_page = 10;
 
-        // Get the transactions of this page.
-        $TransactionPaginate = Transaction::OrderBy('created_at', 'desc')
-        ->OrderBy('user_id','desc')
-        ->with('Product')
-        ->with('User')
-        ->with('PayType')
-        ->paginate($row_per_page);
+        // Get the transactions of this page, ordered by date placed descending,
+        // and then by unique id to make pagination stable.
+        $TransactionPaginate = Transaction::orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->with('Product')
+            ->with('User')
+            ->with('PayType')
+            ->paginate($row_per_page);
 
         // Set the title and data for view.
         $binding = [
@@ -66,9 +67,10 @@ class TransactionController extends Controller
         // Rows per page.
         $row_per_page = 10;
 
-        // Get the transactions of this page.
+        // Get the transactions of this page, ordered by date placed and unique id.
         $TransactionPaginate = Transaction::where('user_id', $user_id)
-            ->OrderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->with('Product')
             ->with('User')
             ->with('PayType')
