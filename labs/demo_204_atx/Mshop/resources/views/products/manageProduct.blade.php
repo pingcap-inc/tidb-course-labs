@@ -42,9 +42,9 @@
                             <th class="p-3 whitespace-nowrap">{{ __('shop.product.Management-fields.DELETE') }}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="productTableBody">
                         @foreach($ProductPaginate as $Product)
-                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <tr class="border-b border-gray-200 hover:bg-gray-50" data-product-id="{{ $Product->id }}">
                                 <td class="p-3 align-middle"> {{ $Product->id }}</td>
 
                                 <td class="p-3 font-bold align-middle">
@@ -87,8 +87,8 @@
                                     @endif
                                 </td>
 
-                                <td class="p-3 align-middle"> {{ $Product->price }}</td>
-                                <td class="p-3 align-middle"> {{ $Product->remain_count }}</td>
+                                <td class="p-3 align-middle" data-field="price"> {{ $Product->price }}</td>
+                                <td class="p-3 align-middle" data-field="remain"> {{ $Product->remain_count }}</td>
 
                                 {{-- Edit Button --}}
                                 <td class="p-3 align-middle">
@@ -154,11 +154,36 @@
                     .then(r => r.json())
                     .then(data => {
                         if (sessionStorage.getItem(AUTO_CHANGE_KEY) !== '1') return;
-                        if (data.ok && data.message) {
+
+                        // Update status text
+                        if (data.message) {
                             statusEl.textContent = data.message;
                             statusEl.classList.remove('hidden');
                         }
-                        window.location.reload();
+
+                        // Partial-update the row for this product instead of reloading the whole page.
+                        if (data.ok && data.product_id) {
+                            const row = document.querySelector('tr[data-product-id=\"' + data.product_id + '\"]');
+                            if (row) {
+                                const remainCell = row.querySelector('[data-field=\"remain\"]');
+                                const priceCell = row.querySelector('[data-field=\"price\"]');
+
+                                // For current auto-change logic we only touch inventory,
+                                // but keep price update hook in case it changes in future.
+                                if (remainCell && (data.action === 'add_stock' || data.action === 'buy')) {
+                                    const newStock = typeof data.new_stock !== 'undefined'
+                                        ? data.new_stock
+                                        : data.remain_after;
+                                    if (typeof newStock !== 'undefined') {
+                                        remainCell.textContent = newStock;
+                                    }
+                                }
+
+                                if (priceCell && typeof data.new_price !== 'undefined') {
+                                    priceCell.textContent = data.new_price;
+                                }
+                            }
+                        }
                     })
                     .catch(err => {
                         if (sessionStorage.getItem(AUTO_CHANGE_KEY) === '1') {
