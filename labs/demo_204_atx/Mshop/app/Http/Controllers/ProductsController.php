@@ -19,26 +19,24 @@ use Illuminate\Support\Facades\Log;
 class ProductsController extends Controller
 {
     /**
-     * Perform one random change on a random product (for auto-change feature).
+     * Perform one random change on the book "Waterfalls" (price or inventory only).
      * Returns JSON with product_id, field, old_value, new_value.
      */
     public function autoChangeOne(Request $request)
     {
-        $products = Product::where('status', '!=', 'D')
-            ->where('name', '!=', '')
-            ->get();
+        $product = Product::where('status', '!=', 'D')
+            ->where('name', 'Waterfalls')
+            ->first();
 
-        if ($products->isEmpty()) {
+        if (!$product) {
             return response()->json([
                 'ok' => false,
-                'message' => 'No products available to change.',
+                'message' => 'Book "Waterfalls" not found.',
             ], 200);
         }
 
-        $product = $products->random(1)->first();
-        $actions = ['price', 'remain_count', 'status'];
+        $actions = ['price', 'remain_count'];
         $action = $actions[array_rand($actions)];
-
         $oldValue = $product->{$action};
 
         switch ($action) {
@@ -49,10 +47,6 @@ class ProductsController extends Controller
             case 'remain_count':
                 $newValue = mt_rand(0, 99);
                 $product->remain_count = $newValue;
-                break;
-            case 'status':
-                $newValue = $product->status === 'C' ? 'S' : 'C';
-                $product->status = $newValue;
                 break;
             default:
                 return response()->json(['ok' => false, 'message' => 'Unknown action'], 400);

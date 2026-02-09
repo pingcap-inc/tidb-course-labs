@@ -19,9 +19,6 @@
                 <button type="button" id="btnStartAutoChange" class="inline-block bg-[#329f75] hover:bg-[#2a8763] text-white font-bold py-2 px-4 rounded transition-colors">
                     {{ __('shop.Buttons.Start-auto-change') }}
                 </button>
-                <button type="button" id="btnStopAutoChange" class="hidden inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors">
-                    {{ __('shop.Buttons.Stop-auto-change') }}
-                </button>
                 <span id="autoChangeStatus" class="text-sm text-gray-600 hidden"></span>
             </div>
         </div>
@@ -137,9 +134,7 @@
             const AUTO_CHANGE_KEY = 'autoChangeActive';
             const AUTO_CHANGE_INTERVAL_MS = 2000;
             const btnStart = document.getElementById('btnStartAutoChange');
-            const btnStop = document.getElementById('btnStopAutoChange');
             const statusEl = document.getElementById('autoChangeStatus');
-            let autoChangeTimer = null;
 
             function getCsrfToken() {
                 const meta = document.querySelector('meta[name="csrf-token"]');
@@ -174,12 +169,10 @@
             }
 
             function startAutoChangeLoop() {
-                btnStart.classList.add('hidden');
-                btnStop.classList.remove('hidden');
                 statusEl.classList.remove('hidden');
                 statusEl.textContent = 'Auto change running...';
                 sessionStorage.setItem(AUTO_CHANGE_KEY, '1');
-                autoChangeTimer = setInterval(runOneAutoChange, AUTO_CHANGE_INTERVAL_MS);
+                setInterval(runOneAutoChange, AUTO_CHANGE_INTERVAL_MS);
                 runOneAutoChange();
             }
 
@@ -188,18 +181,6 @@
             }
 
             btnStart.addEventListener('click', startAutoChangeLoop);
-
-            btnStop.addEventListener('click', function() {
-                sessionStorage.removeItem(AUTO_CHANGE_KEY);
-                if (autoChangeTimer) {
-                    clearInterval(autoChangeTimer);
-                    autoChangeTimer = null;
-                }
-                btnStop.classList.add('hidden');
-                btnStart.classList.remove('hidden');
-                statusEl.textContent = 'Stopped.';
-                setTimeout(() => statusEl.classList.add('hidden'), 2000);
-            });
         });
     </script>
 
