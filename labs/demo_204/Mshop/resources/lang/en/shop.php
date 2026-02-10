@@ -92,6 +92,8 @@ return [
         'UPDATE'              => 'Update',
         'Loading'             => 'Loading...',
         'Wait'                => 'Processing...',
+        'Start-auto-change'   => 'Start auto change',
+        'Stop-auto-change'    => 'STOP auto change',
     ],
     'Message'             => [
         'Please-wait'         => 'Please wait...',

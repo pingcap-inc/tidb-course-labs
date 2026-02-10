@@ -92,6 +92,8 @@ return [
         'UPDATE'                => '更新',
         'Loading'               => '载入...',
         'Wait'                  => '处理中...',
+        'Start-auto-change'     => '开始自动变更',
+        'Stop-auto-change'    => '停止自动变更',
     ],
     'Message'               => [
         'Please-wait'           => '请等待...',
