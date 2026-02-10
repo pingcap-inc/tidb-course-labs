@@ -13,7 +13,15 @@
     </x-slot:title>
 
     <div class="container mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold mb-6">{{ $title }}</h1>
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <h1 class="text-3xl font-bold">{{ $title }}</h1>
+            <div class="flex items-center gap-3">
+                <button type="button" id="btnStartAutoChange" class="inline-block bg-[#329f75] hover:bg-[#2a8763] text-white font-bold py-2 px-4 rounded transition-colors">
+                    {{ __('shop.Buttons.Start-auto-change') }}
+                </button>
+                <span id="autoChangeStatus" class="text-sm text-gray-600 hidden"></span>
+            </div>
+        </div>
 
         {{-- Error message template component --}}
         @include('components.validationErrorMessage')
@@ -34,9 +42,9 @@
                             <th class="p-3 whitespace-nowrap">{{ __('shop.product.Management-fields.DELETE') }}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="productTableBody">
                         @foreach($ProductPaginate as $Product)
-                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <tr class="border-b border-gray-200 hover:bg-gray-50" data-product-id="{{ $Product->id }}">
                                 <td class="p-3 align-middle"> {{ $Product->id }}</td>
 
                                 <td class="p-3 font-bold align-middle">
@@ -79,8 +87,8 @@
                                     @endif
                                 </td>
 
-                                <td class="p-3 align-middle"> {{ $Product->price }}</td>
-                                <td class="p-3 align-middle"> {{ $Product->remain_count }}</td>
+                                <td class="p-3 align-middle" data-field="price"> {{ $Product->price }}</td>
+                                <td class="p-3 align-middle" data-field="remain"> {{ $Product->remain_count }}</td>
 
                                 {{-- Edit Button --}}
                                 <td class="p-3 align-middle">
@@ -119,10 +127,85 @@
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('loadingModal');
             modal.style.display = 'flex';
-
             setTimeout(() => {
                 modal.style.display = 'none';
             }, 2000);
+
+            const AUTO_CHANGE_KEY = 'autoChangeActive';
+            const AUTO_CHANGE_INTERVAL_MS = 2000;
+            const btnStart = document.getElementById('btnStartAutoChange');
+            const statusEl = document.getElementById('autoChangeStatus');
+
+            function getCsrfToken() {
+                const meta = document.querySelector('meta[name="csrf-token"]');
+                return meta ? meta.getAttribute('content') : '';
+            }
+
+            function runOneAutoChange() {
+                if (sessionStorage.getItem(AUTO_CHANGE_KEY) !== '1') return;
+                fetch('{{ url("/products/auto-change/one") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken(),
+                    },
+                })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (sessionStorage.getItem(AUTO_CHANGE_KEY) !== '1') return;
+
+                        // Update status text
+                        if (data.message) {
+                            statusEl.textContent = data.message;
+                            statusEl.classList.remove('hidden');
+                        }
+
+                        // Partial-update the row for this product instead of reloading the whole page.
+                        if (data.ok && data.product_id) {
+                            const row = document.querySelector('tr[data-product-id=\"' + data.product_id + '\"]');
+                            if (row) {
+                                const remainCell = row.querySelector('[data-field=\"remain\"]');
+                                const priceCell = row.querySelector('[data-field=\"price\"]');
+
+                                // For current auto-change logic we only touch inventory,
+                                // but keep price update hook in case it changes in future.
+                                if (remainCell && (data.action === 'add_stock' || data.action === 'buy')) {
+                                    const newStock = typeof data.new_stock !== 'undefined'
+                                        ? data.new_stock
+                                        : data.remain_after;
+                                    if (typeof newStock !== 'undefined') {
+                                        remainCell.textContent = newStock;
+                                    }
+                                }
+
+                                if (priceCell && typeof data.new_price !== 'undefined') {
+                                    priceCell.textContent = data.new_price;
+                                }
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        if (sessionStorage.getItem(AUTO_CHANGE_KEY) === '1') {
+                            statusEl.textContent = 'Error: ' + (err.message || 'Request failed');
+                            statusEl.classList.remove('hidden');
+                        }
+                    });
+            }
+
+            function startAutoChangeLoop() {
+                statusEl.classList.remove('hidden');
+                statusEl.textContent = 'Auto change running...';
+                sessionStorage.setItem(AUTO_CHANGE_KEY, '1');
+                setInterval(runOneAutoChange, AUTO_CHANGE_INTERVAL_MS);
+                runOneAutoChange();
+            }
+
+            if (sessionStorage.getItem(AUTO_CHANGE_KEY) === '1') {
+                startAutoChangeLoop();
+            }
+
+            btnStart.addEventListener('click', startAutoChangeLoop);
         });
     </script>
 
