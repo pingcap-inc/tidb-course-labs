@@ -58,7 +58,7 @@
 
             {{-- Page navigation button --}}
             <div class="mt-4">
-                {{ $TransactionPaginate->links() }}
+                {{ $TransactionPaginate->withPath(url('/transactions'))->links() }}
             </div>
         </div>
     </div>
