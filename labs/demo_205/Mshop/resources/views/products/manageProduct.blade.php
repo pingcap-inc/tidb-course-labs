@@ -110,7 +110,7 @@
 
             {{-- Page navigation button --}}
             <div class="mt-4">
-                {{ $ProductPaginate->links() }}
+                {{ $ProductPaginate->withPath(url('/products'))->links() }}
             </div>
         </div>
     </div>
