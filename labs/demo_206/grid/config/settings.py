@@ -33,14 +33,16 @@ else:
     FORCE_SCRIPT_NAME = None
 
 # ALLOWED_HOSTS: from APP_URL host or explicit list
-if APP_URL:
-    try:
-        _host = urlparse(APP_URL).hostname
-        ALLOWED_HOSTS = [_host] if _host else ['127.0.0.1', 'localhost']
-    except Exception:
-        ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-else:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+#if APP_URL:
+#    try:
+#        _host = urlparse(APP_URL).hostname
+#        ALLOWED_HOSTS = [_host] if _host else ['127.0.0.1', 'localhost']
+#    except Exception:
+#        ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+#else:
+#    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+ALLOWED_HOSTS = ['*']
 
 # --- i18n: en, ja, zh ---
 APP_LOCALE = (os.environ.get('APP_LOCALE') or 'en').strip().lower().replace('_', '-')
