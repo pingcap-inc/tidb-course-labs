@@ -4,6 +4,10 @@
 # Usage: ./init_once.sh   or   bash init_once.sh
 
 set -e
+
+apt-get update
+apt install postgresql-client -y
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
