@@ -19,10 +19,10 @@ use Illuminate\Support\Facades\Log;
 class ProductsController extends Controller
 {
     /**
-     * Perform one random change on the book "Waterfalls".
+     * Perform one random change on a random available product.
      *
      * Rules:
-     * 1. Only the product named "Waterfalls" can be updated.
+     * 1. A random non-deleted product is selected for each change.
      * 2. The change can be:
      *    - a "buy" action that uses the existing purchase routine; OR
      *    - an "add stock" action that increases inventory by a random amount.
@@ -31,13 +31,14 @@ class ProductsController extends Controller
     public function autoChangeOne(Request $request)
     {
         $product = Product::where('status', '!=', 'D')
-            ->where('name', 'Waterfalls')
+            ->where('name', '!=', '')
+            ->inRandomOrder()
             ->first();
 
         if (!$product) {
             return response()->json([
                 'ok' => false,
-                'message' => 'Book "Waterfalls" not found.',
+                'message' => 'No available books found.',
             ], 200);
         }
 
