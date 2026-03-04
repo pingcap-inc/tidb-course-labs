@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) ? $title . ' - Shop' : 'Shop' }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     {{-- Add a fade-out animation that is not present by default in Tailwind. --}}
     <style>
@@ -29,31 +30,11 @@
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
             {{-- Logo --}}
             <div>
-                <a href="#" class="text-xl font-bold px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors inline-flex items-center">
+                <a href="{{ url('/products') }}" class="text-xl font-bold px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors inline-flex items-center">
                     📖 Bookstore 🏬
                 </a>
             </div>
 
-            {{-- Right Menu --}}
-            <div class="flex items-center gap-2">
-                @auth
-                    <span class="text-sm font-medium mr-2">{{ auth()->user()->name }}</span>
-                    <form method="POST" action="/logout" class="inline">
-                        @csrf
-                        <button type="submit" class="text-sm font-medium px-3 py-2 rounded-md hover:bg-gray-100 transition-colors">
-                            Logout
-                        </button>
-                    </form>
-                @else
-                    <a href="#" class="text-sm font-medium px-3 py-2 rounded-md hover:bg-gray-100 transition-colors">
-                        {{ __('shop.layout.Sign-in') }}
-                    </a>
-                    {{-- A primary button with a simulated Lofi theme (black background). --}}
-                    <a href="#" class="text-sm font-medium px-4 py-2 rounded-md bg-black text-white hover:bg-gray-800 transition-colors">
-                        {{ __('shop.layout.Sign-up') }}
-                    </a>
-                @endauth
-            </div>
         </div>
     </nav>
 

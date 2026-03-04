@@ -56,6 +56,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | URL Path Prefix
+    |--------------------------------------------------------------------------
+    |
+    | This prefix is used when the application runs behind a reverse proxy
+    | with a path prefix (e.g., /vscode/proxy/8000). Set URL_PREFIX in your
+    | .env file to configure this value.
+    |
+    */
+
+    'url_prefix' => env('URL_PREFIX', ''),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
