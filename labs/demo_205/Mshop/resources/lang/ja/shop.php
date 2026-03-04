@@ -92,6 +92,8 @@ return [
         'UPDATE'              => '更新',
         'Loading'             => '読み込み中...',
         'Wait'                => '処理中...',
+        'Start-auto-change'   => '自動変更を開始',
+        'Stop-auto-change'    => '自動変更を停止',
     ],
     'Message'             => [
         'Please-wait'         => 'お待ちください...',

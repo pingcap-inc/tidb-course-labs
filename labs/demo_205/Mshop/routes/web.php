@@ -4,16 +4,23 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionController;
 
+// Home
+Route::get('/', function () {
+    return redirect()->to(url('/products'));
+});
+
 // Product
 Route::group(['prefix' => 'products'], function(){
     //List products.
     Route::get('/', [ProductsController::class, 'listProducts']);
     //Create products.
     Route::get('/create', [ProductsController::class, 'create']);
-    //Edit product.
-    Route::get('{product_id}/edit',[ProductsController::class, 'edit']);
     //Manage products.
     Route::get('/manage', [ProductsController::class, 'index']);
+    // Auto random change: perform one random change (for auto-change loop).
+    Route::post('/auto-change/one', [ProductsController::class, 'autoChangeOne']);
+    //Edit product.
+    Route::get('{product_id}/edit',[ProductsController::class, 'edit']);
     //View single product.
     Route::get('{product}/', [ProductsController::class, 'show']);
     //Update product.
