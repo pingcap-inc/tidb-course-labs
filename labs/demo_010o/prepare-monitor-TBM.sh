@@ -53,7 +53,7 @@ echo export HOST_CM_PRIVATE_IP=${HOST_MONITOR1_PRIVATE_IP} >> ./hosts-env.sh
 echo export HOST_CM_PUBLIC_IP=${HOST_MONITOR1_PUBLIC_IP} >> ./hosts-env.sh
 
 # Configure kubectl for EKS cluster
-EKS_CLUSTER_NAME=${EKS_CLUSTER_NAME:-tidb-demo-eks}
+EKS_CLUSTER_NAME=${USER_UNIQUE_TAG}-eks
 REGION=${REGION_NAME:-$(curl -s http://169.254.169.254/latest/meta-data/placement/region)}
 
 aws eks update-kubeconfig --region "${REGION}" --name "${EKS_CLUSTER_NAME}"
