@@ -1,39 +1,10 @@
 #!/bin/bash
 set -e
 
-# =============================================================================
-# Phase 1: Bootstrap environment (moved from CloudFormation User Data)
-# =============================================================================
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LAB_ROOT="$(dirname "$SCRIPT_DIR")"
-cd ~
-
-# Install system packages (kubectl, helm, aws cli, mysql-client)
-export DEBIAN_FRONTEND=noninteractive
-sudo apt-get update -qq
-sudo apt-get install -y unzip python3-pip mysql-client git
-
-# Create cloud-env.sh with region
-REGION_CODE=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
-echo "export REGION_CODE=${REGION_CODE}" > ~/cloud-env.sh
-
-# Copy setup files from lab's setup folder (or clone tidb-course-labs as fallback)
-if [ -d "${LAB_ROOT}/setup" ] && [ -f "${LAB_ROOT}/setup/solution-tidb-cluster.yaml" ]; then
-  cp -R "${LAB_ROOT}/setup/"* ~/
-else
-  echo "Cloning tidb-course-labs for setup files..."
-  git clone -q https://github.com/pingcap-inc/tidb-course-labs.git /tmp/tidb-course-labs
-  cp -R /tmp/tidb-course-labs/labs/demo_010o/* ~/
-  cp /tmp/tidb-course-labs/setup/tidb-lab-mysql-init-amz2/show-mysql-password.sh ~/ 2>/dev/null || true
-  rm -rf /tmp/tidb-course-labs
-fi
-chmod +x ~/*.sh 2>/dev/null || true
+## START of EKS and TiDB Operator setup (Lab Steps Candidates)
 
 # Install kubectl, Helm, AWS CLI
 sudo bash ~/install-operator-env.sh || true
-
-# Add hosts-env.sh to bashrc
-grep -q 'hosts-env.sh' ~/.bashrc 2>/dev/null || echo 'if [ -f ~/hosts-env.sh ]; then source ~/hosts-env.sh; fi' >> ~/.bashrc
 
 # =============================================================================
 # Phase 2: EKS and TiDB Operator setup
@@ -41,31 +12,11 @@ grep -q 'hosts-env.sh' ~/.bashrc 2>/dev/null || echo 'if [ -f ~/hosts-env.sh ]; 
 
 # Setup ENV
 source ~/cloud-env.sh
-
-# REGION_NAME may come from platform; fallback to REGION_CODE or instance metadata
-REGION_NAME=${REGION_NAME:-${REGION_CODE:-$(curl -s http://169.254.169.254/latest/meta-data/placement/region)}}
-echo export REGION_NAME=${REGION_NAME} >> ~/cloud-env.sh
-
-# EKS lab: monitor-only topology - bastion connects to EKS
-echo export HOST_MONITOR1_PRIVATE_IP=${HOST_MONITOR1_PRIVATE_IP} > ./hosts-env.sh
-echo export HOST_MONITOR1_PUBLIC_IP=${HOST_MONITOR1_PUBLIC_IP} >> ./hosts-env.sh
-echo export HOST_CM_PRIVATE_IP=${HOST_MONITOR1_PRIVATE_IP} >> ./hosts-env.sh
-echo export HOST_CM_PUBLIC_IP=${HOST_MONITOR1_PUBLIC_IP} >> ./hosts-env.sh
+source ~/hosts-env.sh
 
 # Configure kubectl for EKS cluster
-EKS_CLUSTER_NAME=${USER_UNIQUE_TAG}-eks
-REGION=${REGION_NAME:-$(curl -s http://169.254.169.254/latest/meta-data/placement/region)}
 
-aws eks update-kubeconfig --region "${REGION}" --name "${EKS_CLUSTER_NAME}"
-
-echo export EKS_CLUSTER_NAME=${EKS_CLUSTER_NAME} >> ./hosts-env.sh
-echo export TIDB_PORT=4000 >> ./hosts-env.sh
-
-source ./hosts-env.sh
-
-echo "ssh -i ~/.ssh/pe-class-key-${REGION_NAME}.pem ${HOST_CM_PRIVATE_IP}" > ./ssh-to-cm.sh
-echo "ssh -i ~/.ssh/pe-class-key-${REGION_NAME}.pem ${HOST_MONITOR1_PRIVATE_IP}" > ./ssh-to-monitor1.sh
-chmod +x ./*.sh
+aws eks update-kubeconfig --region "${REGION_CODE}" --name "${EKS_CLUSTER_NAME}"
 
 # Install TiDB Operator via Helm
 export KUBECONFIG=$HOME/.kube/config
