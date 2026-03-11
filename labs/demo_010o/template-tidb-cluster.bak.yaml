@@ -1,3 +1,4 @@
+
 # TiDB Cluster on AWS EKS via TiDB Operator
 # Minimal topology for lab: 1 PD, 1 TiKV, 1 TiDB
 # Uses LoadBalancer (internal NLB) for TiDB access from bastion in same VPC
@@ -7,7 +8,7 @@ metadata:
   name: tidb-demo
   namespace: tidb-cluster
 spec:
-  version: v8.1.1
+  version: <TIDB_VERSION>
   timezone: UTC
   pvReclaimPolicy: Retain
   enableDynamicConfiguration: true
@@ -18,7 +19,7 @@ spec:
   pd:
     baseImage: pingcap/pd
     maxFailoverCount: 0
-    replicas: 1
+    replicas: 3
     requests:
       storage: "10Gi"
     config: {}
@@ -26,7 +27,7 @@ spec:
     baseImage: pingcap/tikv
     maxFailoverCount: 0
     evictLeaderTimeout: 1m
-    replicas: 1
+    replicas: 3
     requests:
       storage: "10Gi"
     config:
@@ -39,7 +40,7 @@ spec:
   tidb:
     baseImage: pingcap/tidb
     maxFailoverCount: 0
-    replicas: 1
+    replicas: 2
     service:
       type: LoadBalancer
       annotations:

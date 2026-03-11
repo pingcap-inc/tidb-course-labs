@@ -3,8 +3,8 @@ set -e
 
 ## START of EKS and TiDB Operator setup (Lab Steps Candidates)
 
-# Install kubectl, Helm, AWS CLI
-sudo bash ~/install-operator-env.sh || true
+# Install kubectl, Helm, and AWS CLI for TiDB Operator on EKS
+sudo bash ~/install-operator-env.sh
 
 # =============================================================================
 # Phase 2: EKS and TiDB Operator setup
@@ -18,25 +18,34 @@ source ~/hosts-env.sh
 
 aws eks update-kubeconfig --region "${REGION_CODE}" --name "${EKS_CLUSTER_NAME}"
 
-# Install TiDB Operator via Helm
+# Helm Update
 export KUBECONFIG=$HOME/.kube/config
-helm repo add pingcap https://charts.pingcap.org
+helm repo add pingcap https://charts.pingcap.com/
 helm repo update
 
-# Create namespace and install TiDB Operator
-kubectl create namespace tidb-admin 2>/dev/null || true
-helm upgrade --install tidb-operator pingcap/tidb-operator \
-  --namespace tidb-admin \
-  --set operatorImage=pingcap/tidb-operator \
-  --wait
+# Create K8S namespace
+kubectl create namespace tidb-admin
+
+# Install TiDB Operator
+helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.6.5
+
+#helm upgrade --install tidb-operator pingcap/tidb-operator \
+#  --namespace tidb-admin \
+#  --set operatorImage=pingcap/tidb-operator \
+#  --wait
+
+# Verify the TiDB Operator installation
+kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+
+# Install CRD
+kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.5/manifests/crd.yaml
 
 # Create tidb-cluster namespace and deploy TidbCluster
-kubectl create namespace tidb-cluster 2>/dev/null || true
+kubectl create namespace tidb-cluster
 
 # Use TIDB_VERSION from lab if set, otherwise default
-TIDB_VER=${TIDB_VERSION:-v8.1.1}
-sed "s|version:.*|version: ${TIDB_VER}|" ./solution-tidb-cluster.yaml > ./solution-tidb-cluster-deploy.yaml
-kubectl apply -f ./solution-tidb-cluster-deploy.yaml
+sed "s|<TIDB_VERSION>|${TIDB_VERSION}|" ./template-tidb-cluster.yaml > ./solution-tidb-cluster.yaml
+kubectl -n tidb-cluster apply -f ./solution-tidb-cluster.yaml
 
 # Wait for TiDB cluster to be ready
 echo "Waiting for TiDB cluster to be ready on EKS (this may take 5-10 minutes)..."
