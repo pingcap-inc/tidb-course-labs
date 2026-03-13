@@ -44,6 +44,8 @@ spec:
     maxFailoverCount: 0
     replicas: 1
     storageClassName: gp2
+    requests:
+      storage: "20Gi"
     service:
       type: ClusterIP
     config: {}
