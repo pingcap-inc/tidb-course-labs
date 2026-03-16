@@ -68,7 +68,11 @@ spec:
     requests:
       storage: "20Gi"
     service:
-      type: ClusterIP
+      type: LoadBalancer
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-name: "<NLB_NAME>"
+        service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
     config: {}
   tiflash:
     baseImage: pingcap/tiflash
@@ -81,6 +85,8 @@ spec:
         key: dedicated
         operator: Equal
         value: tiflash
-    storageClassName: gp2
-    requests:
-      storage: "70Gi"
+    storageClaims:
+      - resources:
+          requests:
+            storage: 70Gi
+        storageClassName: gp2

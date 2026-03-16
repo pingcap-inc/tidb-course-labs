@@ -55,9 +55,17 @@ kubectl get crd | grep pingcap.com
 kubectl create namespace tidb-cluster
 
 # Use TIDB_VERSION from lab if set, otherwise default
-sed "s|<TIDB_VERSION>|${TIDB_VERSION}|" ./template-tidb-cluster.yaml > ./solution-tidb-cluster.yaml
+cp ./template-tidb-cluster.yaml ./solution-tidb-cluster.yaml
+
+sed -i'' -e "s|<TIDB_VERSION>|${TIDB_VERSION}|g" \
+         -e "s|<NLB_NAME>|${NLB_NAME}|g" \
+         ./solution-tidb-cluster.yaml 2>/dev/null
+
 kubectl -n tidb-cluster apply -f ./solution-tidb-cluster.yaml
 
 # Wait for TiDB cluster to be ready
 watch -n 1 kubectl get pods --namespace tidb-cluster
 kubectl wait --for=condition=Ready tidbcluster/tidb-demo -n tidb-cluster --timeout=900s
+
+# Check the TiDB service
+kubectl describe svc tidb-demo-tidb
