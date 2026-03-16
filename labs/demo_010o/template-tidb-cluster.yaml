@@ -16,7 +16,7 @@ spec:
   pd:
     baseImage: pingcap/pd
     maxFailoverCount: 0
-    replicas: 1
+    replicas: 3
     storageClassName: gp2
     requests:
       storage: "20Gi"
@@ -25,7 +25,7 @@ spec:
     baseImage: pingcap/tikv
     maxFailoverCount: 0
     evictLeaderTimeout: 1m
-    replicas: 1
+    replicas: 3
     storageClassName: gp2
     requests:
       storage: "50Gi"
@@ -42,7 +42,7 @@ spec:
   tidb:
     baseImage: pingcap/tidb
     maxFailoverCount: 0
-    replicas: 1
+    replicas: 2
     storageClassName: gp2
     requests:
       storage: "20Gi"

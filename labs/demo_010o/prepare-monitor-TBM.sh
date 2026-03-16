@@ -23,10 +23,13 @@ export KUBECONFIG=$HOME/.kube/config
 helm repo add pingcap https://charts.pingcap.com/
 helm repo update
 
+# Check EKS nodes
+kubectl get nodes -L az,dedicated
+
 # Create K8S namespace
 kubectl create namespace tidb-admin
 
-# Install TiDB Operator
+# Install TiDB Operator - pull image - "pingcap/tidb-operator:v1.6.5"
 helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --version v1.6.5
 
 #helm upgrade --install tidb-operator pingcap/tidb-operator \
@@ -36,6 +39,7 @@ helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --versio
 
 # Verify the TiDB Operator installation
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+
 
 # Install CRD
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.5/manifests/crd.yaml
@@ -50,5 +54,5 @@ sed "s|<TIDB_VERSION>|${TIDB_VERSION}|" ./template-tidb-cluster.yaml > ./solutio
 kubectl -n tidb-cluster apply -f ./solution-tidb-cluster.yaml
 
 # Wait for TiDB cluster to be ready
-kubectl get pods --namespace tidb-cluster
+watch -n 2 kubectl get pods --namespace tidb-cluster
 kubectl wait --for=condition=Ready tidbcluster/tidb-demo -n tidb-cluster --timeout=900s
