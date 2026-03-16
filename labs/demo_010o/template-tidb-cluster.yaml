@@ -13,27 +13,26 @@ spec:
   discovery: {}
   helper:
     image: alpine:3.16.0
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: az
   pd:
     baseImage: pingcap/pd
     maxFailoverCount: 0
     replicas: 3
+    nodeSelector:
+      dedicated: pd
     storageClassName: gp2
     requests:
       storage: "20Gi"
     config: {}
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: az
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/component: pd
-            app.kubernetes.io/instance: tidb-demo
   tikv:
     baseImage: pingcap/tikv
     maxFailoverCount: 0
     evictLeaderTimeout: 1m
     replicas: 3
+    nodeSelector:
+      dedicated: tikv
     storageClassName: gp2
     requests:
       storage: "50Gi"
@@ -47,29 +46,15 @@ spec:
         max-open-files: 256
       raftdb:
         max-open-files: 256
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: az
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/component: tikv
-            app.kubernetes.io/instance: tidb-demo
   tidb:
     baseImage: pingcap/tidb
     maxFailoverCount: 0
     replicas: 2
+    nodeSelector:
+      dedicated: tidb
     storageClassName: gp2
     requests:
       storage: "20Gi"
     service:
       type: ClusterIP
     config: {}
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: az
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/component: tidb
-            app.kubernetes.io/instance: tidb-demo

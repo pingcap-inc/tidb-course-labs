@@ -40,6 +40,10 @@ helm install --namespace tidb-admin tidb-operator pingcap/tidb-operator --versio
 # Verify the TiDB Operator installation
 kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
 
+# Check the node where the TiDB Operator is running, shoud on the node labeled with "misc"
+kubectl describe pod --namespace tidb-admin \
+    $(kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator | awk 'NR==2 {print $1}') \
+    | grep 'Node:'
 
 # Install CRD
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.5/manifests/crd.yaml
