@@ -81,7 +81,6 @@ spec:
         key: dedicated
         operator: Equal
         value: tiflash
-    storageClaims:
-      - resources:
-          requests:
-            storage: 100Gi
+    storageClassName: gp2
+    requests:
+      storage: "70Gi"
