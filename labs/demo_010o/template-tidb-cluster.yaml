@@ -22,6 +22,11 @@ spec:
     replicas: 3
     nodeSelector:
       dedicated: pd
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: pd
     storageClassName: gp2
     requests:
       storage: "20Gi"
@@ -33,28 +38,50 @@ spec:
     replicas: 3
     nodeSelector:
       dedicated: tikv
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tikv
     storageClassName: gp2
     requests:
       storage: "50Gi"
     config:
       storage:
-        # In basic examples, we set this to avoid using too much storage.
         reserve-space: "0MB"
       rocksdb:
-        # In basic examples, we set this to avoid the following error in some Kubernetes clusters:
-        # "the maximum number of open file descriptors is too small, got 1024, expect greater or equal to 82920"
-        max-open-files: 256
+        max-open-files: 1024
       raftdb:
-        max-open-files: 256
+        max-open-files: 1024
   tidb:
     baseImage: pingcap/tidb
     maxFailoverCount: 0
     replicas: 2
     nodeSelector:
       dedicated: tidb
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tidb
     storageClassName: gp2
     requests:
       storage: "20Gi"
     service:
       type: ClusterIP
     config: {}
+  tiflash:
+    baseImage: pingcap/tiflash
+    maxFailoverCount: 0
+    replicas: 1
+    nodeSelector:
+      dedicated: tiflash
+    tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: tiflash
+    storageClaims:
+      - resources:
+          requests:
+            storage: 100Gi
