@@ -1,0 +1,101 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "NLB + Listener + Target Group for TiDB on EKS (reuse with template-tidb-cluster.yaml and template-targetgroupbinding.yaml). Target group: traffic port 30400 (TiDB MySQL NodePort), health check port 31080 (TiDB status NodePort). NLB listener exposes MySQL port 4000.",
+  "Parameters": {
+    "VpcId": {
+      "Type": "AWS::EC2::VPC::Id",
+      "Description": "VPC where the NLB and EKS cluster live (use same VPC as EKS)."
+    },
+    "SubnetIds": {
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Description": "At least 2 subnets in different AZs (e.g. private subnets used by EKS nodes)."
+    },
+    "ListenerPort": {
+      "Type": "Number",
+      "Default": 4000,
+      "Description": "NLB listener port (MySQL default 4000)."
+    },
+    "NLBName": {
+      "Type": "String",
+      "Default": "tidb-demo-nlb",
+      "Description": "Name tag for the Network Load Balancer."
+    },
+    "TargetGroupName": {
+      "Type": "String",
+      "Default": "tidb-demo-tg",
+      "Description": "Name for the target group. Instance traffic port 30400 (MySQL), health check port 31080 (TiDB status)."
+    }
+  },
+  "Conditions": {
+    "HasSubnets": { "Fn::Not": [{ "Fn::Equals": [{ "Fn::Length": { "Ref": "SubnetIds" } }, 0] }] }
+  },
+  "Resources": {
+    "NLB": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "Name": { "Ref": "NLBName" },
+        "Type": "network",
+        "Scheme": "internal",
+        "Subnets": { "Ref": "SubnetIds" },
+        "Tags": [
+          { "Key": "Name", "Value": { "Ref": "NLBName" } }
+        ]
+      }
+    },
+    "TargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Name": { "Ref": "TargetGroupName" },
+        "Port": 30400,
+        "Protocol": "TCP",
+        "VpcId": { "Ref": "VpcId" },
+        "TargetType": "instance",
+        "HealthCheckEnabled": true,
+        "HealthCheckProtocol": "TCP",
+        "HealthCheckPort": "31080",
+        "HealthCheckIntervalSeconds": 10,
+        "HealthyThresholdCount": 2,
+        "UnhealthyThresholdCount": 2,
+        "TargetGroupAttributes": [
+          { "Key": "deregistration_delay.timeout_seconds", "Value": "60" },
+          { "Key": "preserve_client_ip.enabled", "Value": "true" }
+        ],
+        "Tags": [
+          { "Key": "Name", "Value": { "Ref": "TargetGroupName" } }
+        ]
+      }
+    },
+    "Listener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "DependsOn": "TargetGroup",
+      "Properties": {
+        "LoadBalancerArn": { "Ref": "NLB" },
+        "Port": { "Ref": "ListenerPort" },
+        "Protocol": "TCP",
+        "DefaultActions": [
+          {
+            "Type": "forward",
+            "TargetGroupArn": { "Ref": "TargetGroup" }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "TargetGroupArn": {
+      "Description": "Target group ARN. Set TG_ARN in cloud-env.sh and use with prepare-tidb-nlb-reuse.sh / template-targetgroupbinding.yaml.",
+      "Value": { "Ref": "TargetGroup" },
+      "Export": { "Name": { "Fn::Sub": "${AWS::StackName}-TargetGroupArn" } }
+    },
+    "LoadBalancerArn": {
+      "Description": "NLB ARN.",
+      "Value": { "Ref": "NLB" },
+      "Export": { "Name": { "Fn::Sub": "${AWS::StackName}-LoadBalancerArn" } }
+    },
+    "LoadBalancerDNSName": {
+      "Description": "NLB DNS name; use for MySQL client connection (e.g. mysql -h <this> -P 4000 -u root).",
+      "Value": { "Fn::GetAtt": [ "NLB", "DNSName" ] },
+      "Export": { "Name": { "Fn::Sub": "${AWS::StackName}-LoadBalancerDNSName" } }
+    }
+  }
+}

@@ -21,6 +21,10 @@ if ! command -v aws &> /dev/null; then
   rm -rf aws awscliv2.zip
 fi
 
+# Install eksctl
+curl --silent --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
 # Create kube directory for lab user
 mkdir -p "${LAB_HOME}/.kube"
 chown -R "${LAB_USER}:${LAB_USER}" "${LAB_HOME}/.kube"

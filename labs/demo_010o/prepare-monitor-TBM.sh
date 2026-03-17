@@ -20,6 +20,7 @@ aws eks update-kubeconfig --region "${REGION_CODE}" --name "${EKS_CLUSTER_NAME}"
 
 # Helm Update
 export KUBECONFIG=$HOME/.kube/config
+helm repo add eks https://aws.github.io/eks-charts
 helm repo add pingcap https://charts.pingcap.com/
 helm repo update
 
@@ -59,6 +60,7 @@ cp ./template-tidb-cluster.yaml ./solution-tidb-cluster.yaml
 
 sed -i'' -e "s|<TIDB_VERSION>|${TIDB_VERSION}|g" \
          -e "s|<NLB_NAME>|${NLB_NAME}|g" \
+         -e "s|<TG_ARN>|${TG_ARN}|g" \
          ./solution-tidb-cluster.yaml 2>/dev/null
 
 kubectl -n tidb-cluster apply -f ./solution-tidb-cluster.yaml

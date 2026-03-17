@@ -1,0 +1,23 @@
+# Bind the TiDB service to an existing NLB target group so the AWS Load Balancer
+# Controller registers this cluster's nodes to that target group (no new NLB created).
+# Prerequisites: existing NLB with a listener and target group; AWS LB Controller installed.
+# Your existing target group must use target type "instance", traffic port 30400 (TiDB MySQL NodePort),
+# and health check port 31080 (TiDB status NodePort). See template-tidb-cluster.yaml statusNodePort.
+# Apply after the TidbCluster is created (service name: <TIDBCLUSTER_NAME>-tidb).
+# Replace <TG_ARN> with your target group ARN (e.g. arn:aws:elasticloadbalancing:region:account:targetgroup/name/id).
+# Replace <NAMESPACE> with the namespace of the TidbCluster (default: default).
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: tidb-demo-tidb-tgb
+  namespace: tidb-cluster
+spec:
+  serviceRef:
+    name: tidb-demo-tidb   # TiDB Operator creates this service from TidbCluster metadata.name
+    port: 4000             # MySQL protocol port
+  targetGroupARN: "<TG_ARN>"
+  # Optional: restrict which nodes are registered (instance mode). Omit to use controller default.
+  # nodeSelector:
+  #   matchLabels:
+  #     dedicated: tidb
