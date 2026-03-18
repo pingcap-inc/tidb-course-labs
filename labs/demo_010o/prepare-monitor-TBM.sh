@@ -22,7 +22,7 @@ aws eks update-kubeconfig --region "${REGION_CODE}" --name "${EKS_CLUSTER_NAME}"
 export KUBECONFIG=$HOME/.kube/config
 helm repo add eks https://aws.github.io/eks-charts
 helm repo add pingcap https://charts.pingcap.com/
-helm repo update
+helm repo update eks pingcap
 
 # Check EKS nodes
 kubectl get nodes \
@@ -47,10 +47,11 @@ kubectl describe pod --namespace tidb-admin \
     $(kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator | awk 'NR==2 {print $1}') \
     | grep 'Node:'
 
-# Install CRD
+# Install PingCAP and AWS Load Balancer Controller CRDs
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.5/manifests/crd.yaml
+kubectl create -f https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.7.0/v2_7_0_full.yaml
 
-kubectl get crd | grep pingcap.com
+kubectl get crd | grep pingcap.com; kubectl get crd | grep elbv2.k8s.aws
 
 # Create tidb-cluster namespace and deploy TidbCluster
 kubectl create namespace tidb-cluster
@@ -59,9 +60,12 @@ kubectl create namespace tidb-cluster
 cp ./template-tidb-cluster.yaml ./solution-tidb-cluster.yaml
 
 sed -i'' -e "s|<TIDB_VERSION>|${TIDB_VERSION}|g" \
-         -e "s|<NLB_NAME>|${NLB_NAME}|g" \
-         -e "s|<TG_ARN>|${TG_ARN}|g" \
-         ./solution-tidb-cluster.yaml 2>/dev/null
+         ./solution-tidb-cluster.yaml
+
+cp ./template-targetgroupbinding.yaml ./solution-targetgroupbinding.yaml
+
+sed -i'' -e "s|<TG_ARN>|${TG_ARN}|g" \
+         ./solution-targetgroupbinding.yaml
 
 kubectl -n tidb-cluster apply -f ./solution-tidb-cluster.yaml
 
@@ -70,4 +74,36 @@ watch -n 1 kubectl get pods --namespace tidb-cluster
 kubectl wait --for=condition=Ready tidbcluster/tidb-demo -n tidb-cluster --timeout=900s
 
 # Check the TiDB service
-kubectl describe svc tidb-demo-tidb
+kubectl describe svc tidb-demo-tidb -n tidb-cluster
+
+# Create IAM service account for AWS Load Balancer Controller
+eksctl get iamserviceaccount --cluster=${EKS_CLUSTER_NAME} --namespace=kube-system --region ${REGION_CODE}
+
+LBC_STACK_NAME=${NLB_NAME}
+LBC_ROLE_ARN=$(aws cloudformation describe-stacks \
+    --stack-name "$LBC_STACK_NAME" \
+    --query "Stacks[0].Outputs[?OutputKey=='LoadBalancerControllerRoleArn'].OutputValue" \
+    --output text --region ${REGION_CODE})
+
+eksctl create iamserviceaccount \
+    --cluster=${EKS_CLUSTER_NAME} \
+    --namespace=kube-system \
+    --name=aws-load-balancer-controller \
+    --attach-role-arn=${LBC_ROLE_ARN} \
+    --override-existing-serviceaccounts \
+    --approve \
+    --region ${REGION_CODE}
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=${EKS_CLUSTER_NAME} \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --region ${REGION_CODE}
+
+# Register the TiDB service to the existing target group
+kubectl -n tidb-cluster apply -f solution-targetgroupbinding.yaml
+
+# Check the target group binding
+kubectl get targetgroupbinding -n tidb-cluster
+

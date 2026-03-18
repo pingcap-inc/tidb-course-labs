@@ -11,11 +11,10 @@ apiVersion: elbv2.k8s.aws/v1beta1
 kind: TargetGroupBinding
 metadata:
   name: tidb-demo-tidb-tgb
-  namespace: tidb-cluster
 spec:
   serviceRef:
-    name: tidb-demo-tidb   # TiDB Operator creates this service from TidbCluster metadata.name
-    port: 4000             # MySQL protocol port
+    name: tidb-demo-tidb # TiDB Operator creates this service from TidbCluster metadata.name
+    port: 30400 # MySQL protocol NodePort as set in spec.tidb.service.mysqlNodePort
   targetGroupARN: "<TG_ARN>"
   # Optional: restrict which nodes are registered (instance mode). Omit to use controller default.
   # nodeSelector:

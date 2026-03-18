@@ -71,28 +71,27 @@ spec:
       type: NodePort
       # TiDBServiceSpec (spec.tidb.service): mysqlNodePort + statusNodePort per tidb-operator API
       # https://github.com/pingcap/tidb-operator/blob/master/docs/api-references/docs.md
+      exposeStatus: true
       mysqlNodePort: 30400 # MySQL (4000) on node -> 30400
       statusNodePort: 31080 # Status (10080) on node -> 31080 (for NLB health check)
-    #  type: LoadBalancer
-    #annotations:
-    #  service.beta.kubernetes.io/aws-load-balancer-name: "<NLB_NAME>"
-    #  service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-    #  service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
-    #  service.beta.kubernetes.io/aws-load-balancer-internal: "true"
-    #  service.beta.kubernetes.io/aws-load-balancer-target-group-arn: "<TG_ARN>"
-    #  service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "instance"
-    #  service.beta.kubernetes.io/aws-load-balancer-target-node-labels: "kubernetes.io/os=linux"
-    #  service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: "deregistration_delay.timeout_seconds=60,stickiness.enabled=false,preserve_client_ip.enabled=true"
-    #  service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: "TCP"
-    #  service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "10080"
-    #  service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "10"
-    #  service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "5"
-    #  service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"
-    #  service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "2"
-    #  service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
-    exposeStatus: true
-    port: 4000
-    statusPort: 10080
+      # If you prefer creating a new NLB via Service(type=LoadBalancer), configure it under spec.tidb.service.
+      # type: LoadBalancer
+      #   annotations:
+      #     service.beta.kubernetes.io/aws-load-balancer-name: "<NLB_NAME>"
+      #     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      #     service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
+      #     service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+      #     service.beta.kubernetes.io/aws-load-balancer-target-group-arn: "<TG_ARN>"
+      #     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "instance"
+      #     service.beta.kubernetes.io/aws-load-balancer-target-node-labels: "kubernetes.io/os=linux"
+      #     service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: "deregistration_delay.timeout_seconds=60,stickiness.enabled=false,preserve_client_ip.enabled=true"
+      #     service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: "TCP"
+      #     service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "10080"
+      #     service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "10"
+      #     service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "5"
+      #     service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"
+      #     service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "2"
+      #     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
     config: {}
   tiflash:
     baseImage: pingcap/tiflash
