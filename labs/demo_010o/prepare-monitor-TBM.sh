@@ -73,19 +73,28 @@ kubectl -n tidb-cluster apply -f ./solution-tidb-cluster.yaml
 
 # Wait for TiDB cluster to be ready
 watch -n 1 kubectl get pods --namespace tidb-cluster
-kubectl wait --for=condition=Ready tidbcluster/tidb-demo -n tidb-cluster --timeout=900s
+# kubectl wait --for=condition=Ready tidbcluster/tidb-demo -n tidb-cluster --timeout=900s
 
 # Check the TiDB service
 kubectl describe svc tidb-demo-tidb -n tidb-cluster
 
-# Create IAM service account for AWS Load Balancer Controller
-eksctl get iamserviceaccount --cluster=${EKS_CLUSTER_NAME} --namespace=kube-system --region ${REGION_CODE}
+# Register EKS Nodes to the existing target group
 
-LBC_STACK_NAME=${NLB_NAME}
-LBC_ROLE_ARN=$(aws cloudformation describe-stacks \
-    --stack-name "$LBC_STACK_NAME" \
-    --query "Stacks[0].Outputs[?OutputKey=='LoadBalancerControllerRoleArn'].OutputValue" \
-    --output text --region ${REGION_CODE})
+# Get the real IP address of the node(s) labeled with "dedicated=tidb"
+NODE_TIDB_IPS=($(kubectl get nodes -l dedicated=tidb -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'))
+for ip in "${NODE_TIDB_IPS[@]}"; do
+  echo "Node with dedicated=tidb has IP: $ip"
+  aws elbv2 register-targets \
+    --target-group-arn ${TG_ARN} \
+    --targets "Id=${ip},Port=30400"\
+    --region ${REGION_CODE}
+done
+
+
+# ============== EXPERIMENTAL ==============
+
+# Create IAM service account for AWS Load Balancer Controller
+# eksctl get iamserviceaccount --cluster=${EKS_CLUSTER_NAME} --namespace=kube-system --region ${REGION_CODE}
 
 eksctl create iamserviceaccount \
     --cluster=${EKS_CLUSTER_NAME} \
