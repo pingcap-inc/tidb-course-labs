@@ -48,6 +48,8 @@ kubectl describe pod --namespace tidb-admin \
     | grep 'Node:'
 
 # Install PingCAP and AWS Load Balancer Controller CRDs
+kubectl get crd | grep pingcap.com; kubectl get crd | grep elbv2.k8s.aws
+
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.5/manifests/crd.yaml
 kubectl create -f https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.7.0/v2_7_0_full.yaml
 
