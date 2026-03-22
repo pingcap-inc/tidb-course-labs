@@ -84,9 +84,10 @@ kubectl describe svc tidb-demo-tidb -n tidb-cluster
 NODE_TIDB_IPS=($(kubectl get nodes -l dedicated=tidb -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'))
 for ip in "${NODE_TIDB_IPS[@]}"; do
   echo "Node with dedicated=tidb has IP: $ip"
+  echo "Registering node $ip to existing target group $TG_ARN with port 4000"
   aws elbv2 register-targets \
     --target-group-arn ${TG_ARN} \
-    --targets "Id=${ip},Port=30400"\
+    --targets "Id=${ip},Port=4000"\
     --region ${REGION_CODE}
 done
 
