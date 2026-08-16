@@ -1,9 +1,0 @@
-[project]
-name = "tidb-lab-mem9"
-version = "1.0.0"
-description = "Lab materials for AI Agent Persistent Memory with mem9"
-requires-python = ">=3.10"
-dependencies = [
-    "requests>=2.31.0",
-    "python-dotenv>=1.0.0",
-]
