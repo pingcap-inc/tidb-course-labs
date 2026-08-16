@@ -8,7 +8,7 @@ model:
 terminal:
   backend: docker
   cwd: .
-  timeout: 360
+  timeout: 3600
   home_mode: auto
   docker_mount_cwd_to_workspace: false
   docker_forward_env:
