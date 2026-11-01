@@ -53,7 +53,7 @@ def _check_result(cursor):
 def _sql_mode(arg):
     # SQL_MODE is a comma-separated list of mode names, optionally quoted
     mode = arg.strip().strip("'\"")
-    if not re.fullmatch(r"[A-Za-z_,]*", mode):
+    if not re.fullmatch(r"[A-Za-z0-9_,]*", mode):
         sys.exit("Invalid SQL_MODE: " + arg)
     return mode
 
@@ -110,7 +110,11 @@ if __name__ == "__main__":
     # The SQL_MODE
     if len(sys.argv) > 2 and sys.argv[2] != None:
         print("Set SQL_MODE to:", sys.argv[2])
-        cursor.execute("SET @@SQL_MODE = %s", (_sql_mode(sys.argv[2]),))
+        sql_mode = _sql_mode(sys.argv[2])
+        if sql_mode.upper() == "DEFAULT":
+            cursor.execute("SET @@SQL_MODE = DEFAULT")
+        else:
+            cursor.execute("SET @@SQL_MODE = %s", (sql_mode,))
 
     # Batching
     _batch_style_insert(cursor, 10000)
