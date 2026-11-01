@@ -50,6 +50,14 @@ def _check_result(cursor):
         print(f"Total rows in t1_batchtest table: {row_count}.")
 
 
+def _sql_mode(arg):
+    # SQL_MODE is a comma-separated list of mode names, optionally quoted
+    mode = arg.strip().strip("'\"")
+    if not re.fullmatch(r"[A-Za-z_,]*", mode):
+        sys.exit("Invalid SQL_MODE: " + arg)
+    return mode
+
+
 if __name__ == "__main__":
 
     # Get connected
@@ -102,7 +110,7 @@ if __name__ == "__main__":
     # The SQL_MODE
     if len(sys.argv) > 2 and sys.argv[2] != None:
         print("Set SQL_MODE to:", sys.argv[2])
-        cursor.execute("SET @@SQL_MODE=" + sys.argv[2])
+        cursor.execute("SET @@SQL_MODE = %s", (_sql_mode(sys.argv[2]),))
 
     # Batching
     _batch_style_insert(cursor, 10000)
